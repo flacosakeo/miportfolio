@@ -141,7 +141,7 @@ a:hover{
 }
 
 
-@media (max-width:1000px){
+@media (max-width:800px){
     body{
         flex-direction: column;
     }
