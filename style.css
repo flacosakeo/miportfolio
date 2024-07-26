@@ -51,6 +51,15 @@ body{
     /*border: solid;*/
 }
 
+#iconocv{
+    width: 128px;
+    height: 128px;
+}
+img{
+    width: 32px;
+    height: 32px;
+}
+
 h6{
     font-size: 1vw;
     /*border: solid;*/
@@ -67,6 +76,10 @@ li{
     height: 10vh;
     width: 100%;
 }
+
+
+
+
 
 
 
@@ -128,12 +141,17 @@ a:hover{
 }
 
 
-@media (max-width:1200px){
+@media (max-width:1000px){
     body{
         flex-direction: column;
     }
     #izquierda{
         width: 100%;
+        padding-bottom: 2%;
+    }
+    #nombre, #apellido{
+        font-size: 10vw;
+        margin-left: 2%;
     }
     #foto{
         width: 60vw;
@@ -154,5 +172,9 @@ a:hover{
     }
     #derecha{
         width: 99%;
+    }
+    #iconocv{
+        width: 64px;
+        height: 64px;
     }
 }
