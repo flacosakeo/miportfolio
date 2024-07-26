@@ -1,0 +1,158 @@
+@import url("https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css");
+
+body{
+    /*border: solid green;*/
+    display: flex;
+    max-height: max-content;
+    margin-top: 2%;
+
+}
+#izquierda{    
+    text-align: center;    
+    width: 30vw;
+    /*border: solid red;*/
+    background-color: rgb(161, 161, 255);
+    clip-path: polygon(0 0, 65% 0, 100% 10%, 100% 100%, 0 100%);
+}
+#contenedorDeLaFoto{
+    display: flex;
+    justify-content: center;
+    /*border: solid violet;*/
+    max-width: 100vw;
+    height: 50vh;
+    margin-top: 25%;
+}
+#foto{
+    /*max-width: 100vw;
+    max-height: 100vh;*/
+    width: 20vw;
+    height: 45vh;
+    border-radius: 50px 0px 50px 0px;
+    box-shadow: 10px 10px 10px grey;
+    border: solid 3px whitesmoke;
+    
+}
+#datosPersonales{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;   
+    max-width: 100%;
+    /*border: solid; */
+}
+
+#iconomail{
+    display: flex;    
+    /*border: solid;*/
+}
+#mail{
+    display: grid;
+    align-items: center;
+    /*border: solid;*/
+}
+
+h6{
+    font-size: 1vw;
+    /*border: solid;*/
+}
+ul{
+    margin-left: 2%;
+    padding: 1%;
+}
+li{
+    list-style-type: none;
+}
+#redes{
+    /*border: solid;    */
+    height: 10vh;
+    width: 100%;
+}
+
+
+
+#derecha{
+    justify-content: center;  
+    /*border: solid blue;*/
+    width: 70vw;
+}
+
+#nombre, #apellido{
+    font-size: 5vw;
+    margin-left: 2%;
+}
+#apellido{
+    color: aqua;
+}
+#divisor{
+    position: absolute;
+    right: 0;    
+    /*border: solid;*/
+    height: 3%;
+    width: 50%;
+    background-color: rgb(161, 161, 255);
+    clip-path: polygon(10% 0, 0 100%, 0 100%, 100% 100%, 100% 0);
+}
+#presentacion, #experiencias, #practicas, #conocimientos, #conocimientosadmin{
+    margin-left: 2%;
+}
+#titulopresentacion, #tituloexperiencia, #titulopractica, #tituloconocimiento, #tituloconocimientosadmin{
+    display: flex;
+    align-items: center;
+    
+}
+#iconoinfo, #iconoexperiencia, #iconopractica, #iconoconocimiento, #iconoconocimientosadmin{
+    margin-left: 1%;
+}
+#descripcion{
+    line-height: 1.8;
+    text-align: justify;
+}
+#experiencia, #practica, #conocimiento, #conocimientoadmin{
+    display: flex;
+}
+a{
+    text-decoration: none;
+    color: black;
+}
+a:hover{
+    color: red;
+}
+
+#pie{
+    /*border: solid;*/
+    display: flex;
+    justify-content: center;
+    gap: 2%;
+    height: 10vh;
+    width: 100%;
+}
+
+
+@media (max-width:1200px){
+    body{
+        flex-direction: column;
+    }
+    #izquierda{
+        width: 100%;
+    }
+    #foto{
+        width: 60vw;
+        height: 45vh;
+    }
+    #contenedordelafoto{
+        width: auto;
+    }
+    h6{
+        font-size: 3vw;
+    }
+    img{
+        width: 24px;
+        height: 24px;
+    }
+    #estudios{
+        font-size: 3vw;
+    }
+    #derecha{
+        width: 99%;
+    }
+}
