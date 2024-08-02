@@ -1,5 +1,7 @@
 @import url("https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css");
 
+
+
 body{
     /*border: solid green;*/
     display: flex;
@@ -105,15 +107,17 @@ li{
     background-color: rgb(161, 161, 255);
     clip-path: polygon(10% 0, 0 100%, 0 100%, 100% 100%, 100% 0);
 }
-#presentacion, #experiencias, #practicas, #conocimientos, #conocimientosadmin{
+#presentacion, #experiencias, #practicas, #conocimientos, #conocimientosadmin, #otrosconocimientos{
     margin-left: 2%;
 }
-#titulopresentacion, #tituloexperiencia, #titulopractica, #tituloconocimiento, #tituloconocimientosadmin{
+#titulopresentacion, #tituloexperiencia, #titulopractica, #tituloconocimiento, #tituloconocimientosadmin,
+#titulootrosconocimientos{
     display: flex;
     align-items: center;
     
 }
-#iconoinfo, #iconoexperiencia, #iconopractica, #iconoconocimiento, #iconoconocimientosadmin{
+#iconoinfo, #iconoexperiencia, #iconopractica, #iconoconocimiento, #iconoconocimientosadmin,
+#iconootrosconocimientos{
     margin-left: 1%;
 }
 #descripcion{
@@ -147,7 +151,7 @@ a:hover{
 }
 
 
-#aqui{
+#aqui,#btnskills{
     background: none;
     border: none;
     color: red;
@@ -169,8 +173,161 @@ a:hover{
     align-items: center;
     padding: 2%;
 }
+#divskills{
+    border-bottom: none;
+}
 #formulario, .modal-body, .modal-header{
     background: linear-gradient(to right, white, grey);
+}
+
+.skillscontainer{
+    display: flex;
+    flex-wrap: wrap;
+    width: 99%;
+    height: max-content;
+    background:none;
+    margin-bottom: 2%;
+}
+.skills{
+    display: flex;
+    width: 45%;
+    height: 2%;
+    margin: 1% 2% 1% 2%;
+    background: linear-gradient(to right, white, grey);
+    border-radius: 15px 15px 15px 15px;
+
+
+}
+.skill{
+    display: flex;
+    width: 0;
+    height: max-content;    
+    border-radius: 15px;
+    border-right: solid 1px black;
+    justify-content: center;
+    padding-top: 2%;
+    color: aliceblue;
+    overflow: hidden;
+}
+.skillresto{
+    display: flex;
+    margin-right: 0;
+    width: 0;
+    justify-content: center;
+    border-radius: 15px;
+    padding-top: 2%;
+    /*border: solid;*/
+}
+#html{
+    animation: html 5s forwards;
+    background-color: blue;
+}
+#html100{
+    animation: html100 5s forwards;
+}
+#js{
+    animation: js 5s forwards;
+    background-color: red;
+}
+#js100{
+    animation: js100 5s forwards;
+}
+#css{
+    animation: css 5s forwards;
+    background-color: yellowgreen;
+}
+#css100{
+    animation: css100 5s forwards;
+}
+#sql{
+    animation: sql 5s forwards;
+    background-color: blueviolet; 
+}
+#sql100{
+    animation: sql100 5s forwards;
+}
+#java{
+    animation: java 5s forwards;
+    background-color: rgb(255, 255, 0);
+    color: black;
+}
+#java100{
+    animation: java100 5s forwards;
+}
+#xampp{
+    animation: xampp 5s forwards;
+    background-color: brown;
+}
+#xampp100{
+    animation: xampp100 5s forwards;
+}
+#code{
+    animation: code 5s forwards;
+    background-color: forestgreen;
+}
+#code100{
+    animation: code100 5s forwards;
+}
+#beans{
+    animation: beans 5s forwards;
+    background-color: cyan;
+    color: black;
+}
+#beans100{
+    animation: beans100 5s forwards;
+}
+h6{
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+@keyframes html{
+    to {width: 75%;}
+}
+@keyframes html100{
+    to {width: 25%;}
+}
+@keyframes js{
+    to {width: 70%;}
+}
+@keyframes js100{
+    to {width: 30%;}
+}
+@keyframes css{
+    to {width: 65%;}
+}
+@keyframes css100{
+    to {width: 35%;}
+}
+@keyframes sql{
+    to {width: 55%;}
+}
+@keyframes sql100{
+    to {width: 45%;}
+}
+@keyframes java{
+    to {width: 55%;}
+}
+@keyframes java100{
+    to {width: 45%;}
+}
+@keyframes xampp{
+    to {width: 70%;}
+}
+@keyframes xampp100{
+    to {width: 30%;}
+}
+@keyframes code{
+    to {width: 65%;}
+}
+@keyframes code100{
+    to {width: 35%;}
+}
+@keyframes beans{
+    to {width: 55%;}
+}
+@keyframes beans100{
+    to {width: 45%;}
 }
 
 
@@ -216,5 +373,13 @@ a:hover{
     }
     #formulario{
         width: 100%;
+    }
+    .skillscontainer{
+        flex-direction: column;
+        margin-bottom: 2%;
+    }
+    .skills{
+        width: 99%;
+        
     }
 }
