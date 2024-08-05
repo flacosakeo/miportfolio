@@ -81,10 +81,6 @@ li{
 
 
 
-
-
-
-
 #derecha{
     justify-content: center;  
     /*border: solid blue;*/
@@ -193,7 +189,8 @@ a:hover{
     width: 45%;
     height: 2%;
     margin: 1% 2% 1% 2%;
-    background: linear-gradient(to right, white, grey);
+    /*background: linear-gradient(to right, rgb(192, 192, 192), grey);*/
+    background-color: rgba(255, 136, 0, 0.295);
     border-radius: 15px 15px 15px 15px;
 
 
@@ -207,7 +204,8 @@ a:hover{
     justify-content: center;
     padding-top: 2%;
     color: aliceblue;
-    overflow: hidden;
+    overflow: visible;
+    background-color: rgb(161, 161, 255);
 }
 .skillresto{
     display: flex;
@@ -218,121 +216,20 @@ a:hover{
     padding-top: 2%;
     /*border: solid;*/
 }
-#html{
+/*#html{
     animation: html 5s forwards;
     background-color: blue;
-}
-#html100{
-    animation: html100 5s forwards;
-}
-#js{
-    animation: js 5s forwards;
-    background-color: red;
-}
-#js100{
-    animation: js100 5s forwards;
-}
-#css{
-    animation: css 5s forwards;
-    background-color: yellowgreen;
-}
-#css100{
-    animation: css100 5s forwards;
-}
-#sql{
-    animation: sql 5s forwards;
-    background-color: blueviolet; 
-}
-#sql100{
-    animation: sql100 5s forwards;
-}
-#java{
-    animation: java 5s forwards;
-    background-color: rgb(255, 255, 0);
-    color: black;
-}
-#java100{
-    animation: java100 5s forwards;
-}
-#xampp{
-    animation: xampp 5s forwards;
-    background-color: brown;
-}
-#xampp100{
-    animation: xampp100 5s forwards;
-}
-#code{
-    animation: code 5s forwards;
-    background-color: forestgreen;
-}
-#code100{
-    animation: code100 5s forwards;
-}
-#beans{
-    animation: beans 5s forwards;
-    background-color: cyan;
-    color: black;
-}
-#beans100{
-    animation: beans100 5s forwards;
-}
+}*/
+
 h6{
     white-space: nowrap;
-    overflow: hidden;
+
+    color: black;
 }
 
-@keyframes html{
+/*@keyframes html{
     to {width: 75%;}
-}
-@keyframes html100{
-    to {width: 25%;}
-}
-@keyframes js{
-    to {width: 70%;}
-}
-@keyframes js100{
-    to {width: 30%;}
-}
-@keyframes css{
-    to {width: 65%;}
-}
-@keyframes css100{
-    to {width: 35%;}
-}
-@keyframes sql{
-    to {width: 55%;}
-}
-@keyframes sql100{
-    to {width: 45%;}
-}
-@keyframes java{
-    to {width: 55%;}
-}
-@keyframes java100{
-    to {width: 45%;}
-}
-@keyframes xampp{
-    to {width: 70%;}
-}
-@keyframes xampp100{
-    to {width: 30%;}
-}
-@keyframes code{
-    to {width: 65%;}
-}
-@keyframes code100{
-    to {width: 35%;}
-}
-@keyframes beans{
-    to {width: 55%;}
-}
-@keyframes beans100{
-    to {width: 45%;}
-}
-
-
-
-
+}*/
 
 
 @media (max-width:600px){
@@ -355,7 +252,7 @@ h6{
         width: auto;
     }
     h6{
-        font-size: 3vw;
+        font-size: 2vw;
     }
     img{
         width: 24px;
@@ -379,7 +276,6 @@ h6{
         margin-bottom: 2%;
     }
     .skills{
-        width: 99%;
-        
+        width: 99%;        
     }
 }
