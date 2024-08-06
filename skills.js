@@ -42,9 +42,9 @@ function crearSkill(){
         //h6skill.textContent = divskill.id.toUpperCase() +" "+ random+"%";//el texto que muestra las etiquetas h6 creadas
         //h6skillresto.textContent = 100 - random+"%";
 
-        rojo = Math.floor(Math.random() * (0 - 255 + 1)) + 255;//generacion de un numero aleatorio para la formacion de un color
-        verde = Math.floor(Math.random() * (0 - 255 + 1)) + 255;
-        azul = Math.floor(Math.random() * (0 - 255 + 1)) + 255;
+        rojo = Math.floor(Math.random() * 256);//generacion de un numero aleatorio para la formacion de un color
+        verde = Math.floor(Math.random() * 256);
+        azul = Math.floor(Math.random() * 256);
         
         if (rojo < 150 && verde < 150 && azul < 150){//condicion que asigna un color mas claro a la etiqueta
             h6skill.style.color = 'rgb(250, 250, 250)';//de la barra de progreso
