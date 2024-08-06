@@ -32,8 +32,9 @@ function crearSkill(){
         divskillresto.animationName = `${etiqueta}100`;
         
         
-        random = Math.floor(Math.random() * (1 - 100 + 1)) + 100;//generacion de numero aleatorio para el porcentaje
-
+        //random = Math.floor(Math.random() * (1 - 100 + 1)) + 100;//generacion de numero aleatorio para el porcentaje
+        random = Math.floor(Math.random() * 100) + 1;//generacion de numero aleatorio para el porcentaje
+        
         randomresto = 100 - random;//numero del porcentaje resto
 
         divskill.title = `${etiqueta}`.toUpperCase() +' '+`${random}%`;//asignacion de un titulo
