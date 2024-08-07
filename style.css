@@ -176,14 +176,16 @@ a:hover{
     background: linear-gradient(to right, white, grey);
 }
 
-.skillscontainer{
+.skillscontainer, .skillscircularcontainer {
     display: flex;
     flex-wrap: wrap;
     width: 99%;
     height: max-content;
     background:none;
     margin-bottom: 2%;
+    /*gap: 1%;*/
 }
+
 .skills{
     display: flex;
     width: 45%;
@@ -229,6 +231,40 @@ h6{
 /*@keyframes html{
     to {width: 75%;}
 }*/
+
+.skillscircular {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    margin: 1%;
+    box-shadow: 2px 2px 1px 1px ;
+    /*border: solid 1px black;*/
+}
+
+.skillscirculartexto {
+    position: absolute;
+    font-size: 80%;
+    font-weight: bold;
+    text-align: center;
+    /*border: solid 1px;*/
+}
+.skillscircularcontenedor{
+    margin: 2%;
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    max-height: max-content;
+    max-width: max-content;
+    /*border: solid 1px red;*/
+}
+.skillscirculartextonombre{
+    font-size: 70%;
+    font-weight: bold;
+}
 
 
 @media (max-width:600px){
@@ -276,5 +312,8 @@ h6{
     }
     .skills{
         width: 99%;        
+    }
+    .skillscirculartextonombre{
+        font-size: 70%;        
     }
 }
