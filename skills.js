@@ -46,10 +46,7 @@ function crearSkill(){
         verde = Math.floor(Math.random() * 256);
         azul = Math.floor(Math.random() * 256);
         
-        if ((rojo < 150 && verde < 150 && azul < 150) ||
-           (rojo < 150 && verde < 150 && azul > 150) ||
-           (rojo < 150 && verde > 150 && azul < 150) ||
-           (rojo > 150 && verde < 150 && azul < 150)){//condicion que asigna un color mas claro a la etiqueta
+        if (rojo < 150 && verde < 150 && azul < 150){//condicion que asigna un color mas claro a la etiqueta
             h6skill.style.color = 'rgb(250, 250, 250)';//de la barra de progreso
             divskill.style.borderRight = 'solid 1px white';
         }
