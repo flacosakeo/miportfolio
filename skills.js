@@ -115,13 +115,13 @@ function intervaloresto(ancho, randomresto, etiquetaTexto){
     }, 30);//refresco en milisegundos
 }
 
-function intervalo(ancho, randomresto, etiquetaTexto){
+function intervalo(ancho, randomresto, etiquetaTexto, etiqueta){
     let interval = setInterval(function(){
         if (ancho >= randomresto){
             clearInterval(interval);
         }else{
             ancho++;
-            etiquetaTexto.textContent = ancho + '%';
+            etiquetaTexto.textContent = `${etiqueta}`.toUpperCase() + ` ${ancho}%`;
         }
     }, 30);
 }
@@ -164,8 +164,7 @@ function crearSkillCircular(){
         color4 = generarColor();
 
         
-        if (rojo < 150 && verde < 150 && azul < 150){
-            
+        if (rojo < 150 && verde < 150 && azul < 150){            
             spannumero.style.color = 'rgb(250, 250, 250)';//de la barra de progreso
             divskill.style.boxShadow = '2px 2px 1px 1px rgb(250, 250, 250)';
          }
@@ -179,22 +178,16 @@ function crearSkillCircular(){
 
         let observar = new IntersectionObserver((entries, observar) => {//esta funcion permite uniciar las animacion
             entries.forEach(entry => {                                  //nuevamente cuando las barra de progreso
-                if (entry.isIntersecting) {                             //salen de pantalla y se vuelve a visualizar
-                    intervalo(ancho, random, spannumero);
-                    intervaloCircular(random, divskill.id, color1, color2, color3)
+                if (entry.isIntersecting) {//salen de pantalla y se vuelve a visualizar
+                    intervaloCircular(ancho, random, spannumero);
+                    progresoCircular(random, divskill.id, color1, color2, color3)
                     //observar.disconnect(); // detiene la animacion
                 }
             });
         });
-        let progreso = document.getElementById(divskillcontenedor.id);
-        observar.observe(progreso);
-
-
-
-
-
-        
-    })
+        let progreso = document.getElementById(divskill.id);
+        observar.observe(progreso);      
+    });
 }
 
 
@@ -206,12 +199,7 @@ function generarColor(){
     return color = `rgb(${rojo},${verde},${azul})`;
 }
 
-
-
-
-
-
-function intervaloCircular(random, etiquetaTexto,color1,color2, color3){
+function progresoCircular(random, etiquetaTexto,color1,color2, color3){
     const circle = document.getElementById(etiquetaTexto);
 
     let inicio = 0;
@@ -227,28 +215,16 @@ function intervaloCircular(random, etiquetaTexto,color1,color2, color3){
     }
     }, speed);
 }
-
-function animacioncirculo(random){
-    var styleSheet = document.createElement("style");
-    document.head.appendChild(styleSheet);
-
-    // Añadir la regla de animación a la hoja de estilos
-    var rules = `
-        @keyframes rotate {
-            0% {
-                background-position: 0% 0%;
-            }
-            100% {
-                background-position: ${random}% ${random}%;
-            }
+function intervaloCircular(ancho, random, etiquetaTexto){
+    let interval = setInterval(function(){
+        if (ancho >= random){
+            clearInterval(interval);
+        }else{
+            ancho++;
+            etiquetaTexto.textContent = `${ancho}%`;
         }
-        .progress-circle {
-            animation: rotate 5s linear infinite;
-        }
-    `;
-    styleSheet.sheet.insertRule(rules, styleSheet.sheet.cssRules.length);
+    }, 30);
 }
-
 
 if (eleccion === 1){
     crearSkillBarra();
