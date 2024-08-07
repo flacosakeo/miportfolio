@@ -48,7 +48,7 @@ function crearSkill(){
         
         if (rojo < 150 && verde < 150 && azul < 150){//condicion que asigna un color mas claro a la etiqueta
             h6skill.style.color = 'rgb(250, 250, 250)';//de la barra de progreso
-            divskill.style.borderRight = 'solid 2px white';
+            divskill.style.borderRight = 'solid 1px white';
         }
 
         divskill.style.backgroundColor = `rgb(${rojo},${verde},${azul})`;//asignacion del color generado a la barra de progreso
