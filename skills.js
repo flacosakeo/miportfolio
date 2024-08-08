@@ -1,24 +1,22 @@
+function inicio(){
+    let etiquetas = ["css","html","js","java","sql","xampp","netbeans","vs-code","visual-foxpro",
+    "coreldraw","office","windows","postman","photoshop"];//array con etiquetas
+    let etiquetasfiltro = [];//array vacio
 
-let etiquetas = ["css","html","js","java","sql","xampp","netbeans","vs-code","visual-foxpro",
-            "coreldraw","office","windows","postman","photoshop"];//array con etiquetas
-let etiquetasfiltro = [];//array vacio
+    let longitud = Math.floor(Math.random() * (0 - etiquetas.length)) + etiquetas.length;
 
-let longitud = Math.floor(Math.random() * (0 - etiquetas.length)) + etiquetas.length;
+    for(let i = 0; i <= longitud; i++){
+        let indice = 0;
+        indice = Math.floor(Math.random() * etiquetas.length);
+        etiquetasfiltro.push(etiquetas[indice]);
+        etiquetas.splice(indice, 1);
+    } 
+    return etiquetasfiltro;
+}
 
-let eleccion = Math.floor(Math.random() * 2) + 1;
 
-
-
-for(let i = 0; i <= longitud; i++){
-    let indice = 0;
-    indice = Math.floor(Math.random() * etiquetas.length);
-    etiquetasfiltro.push(etiquetas[indice]);
-    etiquetas.splice(indice, 1);
-} 
-
-console.log(etiquetasfiltro)
-function crearSkillBarra(){    
-  
+function crearSkillBarra(etiquetasfiltro){    
+    
     etiquetasfiltro.forEach(etiqueta => {
         let random, randomresto, rojo, verde, azul;//declaracion de variables
         let ancho = 0;
@@ -130,7 +128,7 @@ function intervalo(ancho, randomresto, etiquetaTexto, etiqueta){
 
 
 
-function crearSkillCircular(){
+function crearSkillCircular(etiquetasfiltro){
     etiquetasfiltro.forEach(etiqueta => {
         let random, color1, color2, color3, color4;//declaracion de variables        
         let ancho = 0;
@@ -138,15 +136,19 @@ function crearSkillCircular(){
         let spannombre = document.createElement('span');
         let spannumero = document.createElement('span');
         let divskillcontenedor = document.createElement('div');
-        
+        let divskillcentro= document.createElement('div');
+
         divskill.classList.add('skillscircular');
         divskillcontenedor.classList.add('skillscircularcontenedor')
         spannombre.classList.add('skillscirculartextonombre');
         spannumero.classList.add('skillscirculartexto');
+        divskillcentro.classList.add('skillscircularcentro')
 
         divskill.id = `${etiqueta}circulo`;
         divskillcontenedor.id = `${etiqueta}`
         divskill.title = `${etiqueta}`.toUpperCase();
+        divskillcentro.id = `${etiqueta}centro`;
+        
         
         spannumero.id = 'numero';
 
@@ -164,16 +166,20 @@ function crearSkillCircular(){
         color4 = generarColor();
 
         
-        if (rojo < 150 && verde < 150 && azul < 150){            
+        /*if (rojo < 150 && verde < 150 && azul < 150){            
             spannumero.style.color = 'rgb(250, 250, 250)';//de la barra de progreso
             divskill.style.boxShadow = '2px 2px 1px 1px rgb(250, 250, 250)';
-         }
+         }*/
 
-            
         document.querySelector('.skillscircularcontainer').appendChild(divskillcontenedor);
         document.getElementById(divskillcontenedor.id).appendChild(divskill); 
         document.getElementById(divskillcontenedor.id).appendChild(spannombre);
-        document.getElementById(divskill.id).appendChild(spannumero);                
+        document.getElementById(divskill.id).appendChild(divskillcentro);
+        document.getElementById(divskillcentro.id).appendChild(spannumero);
+        /*document.querySelector('.skillscircularcontainer').appendChild(divskillcontenedor);
+        document.getElementById(divskillcontenedor.id).appendChild(divskill); 
+        document.getElementById(divskillcontenedor.id).appendChild(spannombre);
+        document.getElementById(divskill.id).appendChild(spannumero);*/              
 
 
         let observar = new IntersectionObserver((entries, observar) => {//esta funcion permite uniciar las animacion
@@ -209,7 +215,7 @@ function progresoCircular(random, etiquetaTexto,color1,color2, color3){
     let progreso = setInterval(()=>{
         inicio++
         etiquetaTexto.textContent = `${inicio}%`
-        circle.style.background = `conic-gradient(${color1} ${inicio * 3.6}deg, ${color2} 0deg, ${color3} 0deg, rgba(255, 136, 0, 0.295) 0deg)`
+        circle.style.background = `conic-gradient(${color1}, ${color2}, ${color3} ${inicio * 3.6}deg, bisque 0deg)`
     if (inicio==fin){
         clearInterval(progreso);
     }
@@ -226,8 +232,36 @@ function intervaloCircular(ancho, random, etiquetaTexto){
     }, 30);
 }
 
-if (eleccion === 1){
-    crearSkillBarra();
-}else{
-    crearSkillCircular();
+function elegir(){
+    //inicio();
+    let elemento = document.getElementById('opciones');
+    let valor = elemento.value;
+
+    if (valor == 1){
+        //location.reload()
+        document.getElementById('circulos').innerHTML='';
+        document.getElementById('barras').removeAttribute('hidden');
+        document.getElementById('circulos').toggleAttribute('hidden');
+        crearSkillBarra(inicio());
+    }
+    if (valor ==2){
+        document.getElementById('barras').innerHTML='';
+        document.getElementById('barras').toggleAttribute('hidden');
+        document.getElementById('circulos').removeAttribute('hidden');
+        crearSkillCircular(inicio());
+    }
+}
+
+function recargar(){
+    
+    let opcion = document.getElementById('opciones').value;
+    if (opcion == 1){
+        document.getElementById('barras').innerHTML='';
+        //crearSkillBarra();
+        crearSkillBarra(inicio());
+    }
+    if (opcion == 2){
+        document.getElementById('circulos').innerHTML='';
+        crearSkillCircular(inicio());
+    }
 }

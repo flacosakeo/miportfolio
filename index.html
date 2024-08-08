@@ -258,30 +258,31 @@
 
         <div id="otrosconocimientos">
             <div id="titulootrosconocimientos">
-                <div>
+                <div style="display: flex;">
                     <h2>Otros Conocimientos</h2>
+                    <a href="" onclick="recargar(); return false" ><img src="iconos/education.png" alt=""></a>
                 </div>
                 <div id="iconootrosconocimientos">
-                    <a href="" onclick="location.reload(); return false" ><img src="iconos/education.png" alt=""></a>
+                    
+                    <div id="opcionescontainer">
+                        <ul>
+                        <select class="form-select form-select-lg mb-3" aria-label="Large select example" id="opciones" onchange="elegir()">
+                            <option value="0">Elegir</option>
+                            <option value="1">Barras</option>
+                            <option value="2">Circulos</option>
+                        </select>
+                        </ul>
+                    </div>
                 </div>            
             </div>
             <ul>
-                <div class="skillscontainer">
+                <div class="skillscontainer" id="barras" hidden>
 
                 </div>
 
-                <div class="skillscircularcontainer">
-                    <!--<div class="skillscircular" id="css">
-                        <span class="skillscirculartexto" id="skillscirculartexto">0%</span>
-                    </div>
-                    <div class="skillscircular" id="skillscircular">
-                        <span class="skillscirculartexto" id="skillscirculartexto">10%</span>
-                    </div>
-                    <div class="skillscircular" id="skillscircular">
-                        <span class="skillscirculartexto" id="skillscirculartexto">50%</span>
-                    </div>-->
-                </div>
-                
+                <div class="skillscircularcontainer" id="circulos" hidden>
+              
+                </div>                
             </ul>
         </div>
 
