@@ -10,7 +10,7 @@ body{
 }
 #izquierda{    
     text-align: center;    
-    width: 30vw;
+    width: max-content;
     /*border: solid red;*/
     background-color: rgb(161, 161, 255);
     clip-path: polygon(0 0, 75% 0, 100% 10%, 100% 100%, 0 100%);
@@ -62,7 +62,7 @@ img{
 }
 
 h6{
-    font-size: 18px;
+    font-size: 16px;
     /*border: solid;*/
 }
 ul{
