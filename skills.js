@@ -158,33 +158,22 @@ function crearSkillCircular(etiquetasfiltro){
 
         spannombre.textContent = `${etiqueta}`.toUpperCase();
         spannumero.textContent = `${random}%`;
-        console.log()
-
+        
         color1 = generarColor();
         color2 = generarColor();
         color3 = generarColor();
         color4 = generarColor();
-
-        
-        /*if (rojo < 150 && verde < 150 && azul < 150){            
-            spannumero.style.color = 'rgb(250, 250, 250)';//de la barra de progreso
-            divskill.style.boxShadow = '2px 2px 1px 1px rgb(250, 250, 250)';
-         }*/
 
         document.querySelector('.skillscircularcontainer').appendChild(divskillcontenedor);
         document.getElementById(divskillcontenedor.id).appendChild(divskill); 
         document.getElementById(divskillcontenedor.id).appendChild(spannombre);
         document.getElementById(divskill.id).appendChild(divskillcentro);
         document.getElementById(divskillcentro.id).appendChild(spannumero);
-        /*document.querySelector('.skillscircularcontainer').appendChild(divskillcontenedor);
-        document.getElementById(divskillcontenedor.id).appendChild(divskill); 
-        document.getElementById(divskillcontenedor.id).appendChild(spannombre);
-        document.getElementById(divskill.id).appendChild(spannumero);*/              
-
 
         let observar = new IntersectionObserver((entries, observar) => {//esta funcion permite uniciar las animacion
             entries.forEach(entry => {                                  //nuevamente cuando las barra de progreso
                 if (entry.isIntersecting) {//salen de pantalla y se vuelve a visualizar
+                    
                     intervaloCircular(ancho, random, spannumero);
                     progresoCircular(random, divskill.id, color1, color2, color3)
                     //observar.disconnect(); // detiene la animacion
@@ -232,6 +221,8 @@ function intervaloCircular(ancho, random, etiquetaTexto){
     }, 30);
 }
 
+
+
 function elegir(){
     //inicio();
     let elemento = document.getElementById('opciones');
@@ -239,6 +230,7 @@ function elegir(){
 
     if (valor == 1){
         //location.reload()
+        document.getElementById('barras').innerHTML='';
         document.getElementById('circulos').innerHTML='';
         document.getElementById('barras').removeAttribute('hidden');
         document.getElementById('circulos').toggleAttribute('hidden');
@@ -246,6 +238,7 @@ function elegir(){
     }
     if (valor ==2){
         document.getElementById('barras').innerHTML='';
+        document.getElementById('circulos').innerHTML='';
         document.getElementById('barras').toggleAttribute('hidden');
         document.getElementById('circulos').removeAttribute('hidden');
         crearSkillCircular(inicio());
@@ -255,6 +248,9 @@ function elegir(){
 function recargar(){
     
     let opcion = document.getElementById('opciones').value;
+    if (opcion == 0){
+        alert('Elija una opción');
+    }
     if (opcion == 1){
         document.getElementById('barras').innerHTML='';
         //crearSkillBarra();

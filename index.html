@@ -258,23 +258,28 @@
 
         <div id="otrosconocimientos">
             <div id="titulootrosconocimientos">
-                <div style="display: flex;">
-                    <h2>Otros Conocimientos</h2>
-                    <a href="" onclick="recargar(); return false" ><img src="iconos/education.png" alt=""></a>
+                <div id="titulootrosconocimientosconicono">
+                    <h2 id="textootrosconocimientos">Otros Conocimientos</h2>
+                
+                    <img src="iconos/education.png" alt=""> 
+                
                 </div>
-                <div id="iconootrosconocimientos">
-                    
+                
+                <div id="opcionesotrosconocimientos">                   
                     <div id="opcionescontainer">
-                        <ul>
-                        <select class="form-select form-select-lg mb-3" aria-label="Large select example" id="opciones" onchange="elegir()">
-                            <option value="0">Elegir</option>
-                            <option value="1">Barras</option>
-                            <option value="2">Circulos</option>
-                        </select>
-                        </ul>
-                    </div>
-                </div>            
-            </div>
+                        
+                            <select class="form-select form-select-lg mb-3" aria-label="Large select example" id="opciones" onchange="elegir()">
+                                <option value="0">Elegir</option>
+                                <option value="1">Barras</option>
+                                <option value="2">Circulos</option>
+                            </select>                            
+                        
+                            <a href="" onclick="recargar(); return false"><img src="iconos/rotation.png" alt="" id="iconoactualizar" title="Recargar"></a> 
+                                            
+                    </div>                           
+                </div>
+            </div>    
+            
             <ul>
                 <div class="skillscontainer" id="barras" hidden>
 
