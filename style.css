@@ -213,21 +213,23 @@ a:hover{
     background: linear-gradient(to right, white, grey);
 }
 
-.skillscontainer, .skillscircularcontainer {
+.skillscontainer,.skillscircularcontainer {
     display: flex;
     flex-wrap: wrap;
     width: 99%;
-    height: max-content;
+    /*border: solid 1px;*/
     background:none;
     margin-bottom: 2%;
     /*gap: 1%;*/
 }
 
+
 .skills{
     display: flex;
     width: 45%;
     height: 2%;
-    margin: 1% 2% 1% 2%;
+    margin: 0% 2% 1% 2%;
+    
     /*background: linear-gradient(to right, rgb(192, 192, 192), grey);*/
     background-color: rgba(255, 136, 0, 0.295);
     border-radius: 15px 15px 15px 15px;
@@ -237,6 +239,7 @@ a:hover{
 .skill{
     display: flex;
     width: 0;
+    
     height: max-content;    
     border-radius: 15px;
     border-right: solid 1px black;
@@ -255,6 +258,7 @@ a:hover{
     padding-top: 2%;
     /*border: solid;*/
 }
+
 /*#html{
     animation: html 5s forwards;
     background-color: blue;
@@ -263,6 +267,7 @@ a:hover{
 h6{
     white-space: nowrap;
     color: black;
+    font-size: 10px;
 }
 
 /*@keyframes html{
