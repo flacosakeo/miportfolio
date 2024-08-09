@@ -61,7 +61,7 @@ img{
     height: 32px;
 }
 
-h6{
+#h6nombre, #h6localidad{
     font-size: 16px;
     /*border: solid;*/
 }
