@@ -1,5 +1,7 @@
 @import url("https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css");
 @import url("https://fonts.googleapis.com/css?family=Lato");
+
+
 #containertorta{
     display: flex;
     flex-direction: column;
@@ -218,6 +220,7 @@ a:hover{
     justify-content: center;
     align-items: center;
     padding: 2%;
+    
 }
 #divskills{
     border-bottom: none;
@@ -229,13 +232,16 @@ a:hover{
 .skillscontainer,.skillscircularcontainer {
     display: flex;
     flex-wrap: wrap;
-    width: 99%;
+    width: 100%;
     /*border: solid 1px;*/
     background:none;
     margin-bottom: 2%;
-    /*gap: 1%;*/
+    
+   /*gap: 1%;*/
 }
-
+.skillscircularcontainer{
+    justify-content: center;
+}
 
 .skills{
     display: flex;
@@ -376,6 +382,9 @@ h6{
     .skillscontainer{
         flex-direction: column;
         margin-bottom: 2%;
+    }
+    .skillscontainer,.skillscircularcontainer {
+        width: 95%;        
     }
     .skills{
         width: 99%;        
