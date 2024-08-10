@@ -175,7 +175,7 @@ function crearSkillCircular(etiquetasfiltro) {
             animInterval = setInterval(() => {
                 progreso += 1;
                 spannumero.textContent = `${progreso}%`;
-                divskill.style.background = `conic-gradient(${color1}, white, ${color2}, white, ${color3}, white, ${color4}, ${progreso * 3.6}deg, bisque 0deg)`;
+                divskill.style.background = `conic-gradient(${color1}, white, ${color2}, white, ${color3}, white, ${color4} ${progreso * 3.6}deg, bisque 0deg)`;
                 //divskill.style.background = `conic-gradient(black, white, black, white, black, white, black ${progreso * 3.6}deg, bisque 0deg)`;
                 if (progreso >= random) {
                     clearInterval(animInterval);
