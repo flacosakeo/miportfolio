@@ -122,7 +122,7 @@ function intervalo(ancho, randomresto, etiquetaTexto, etiqueta){
 
 function crearSkillCircular(etiquetasfiltro) {
     etiquetasfiltro.forEach(etiqueta => {
-        let random, color1, color2, color3;
+        let random, color1, color2, color3, color4;
         let ancho = 0;
         let divskill = document.createElement('div');
         let spannombre = document.createElement('span');
