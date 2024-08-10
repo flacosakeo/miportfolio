@@ -1,6 +1,19 @@
 @import url("https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css");
+@import url("https://fonts.googleapis.com/css?family=Lato");
+#containertorta{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    /*border: solid 1px;*/
 
-
+}
+canvas{
+    width: 100%;
+    height: 100%;
+    font-family: 'Lato';
+}
 body{
     /*border: solid green;*/
     display: flex;
@@ -377,5 +390,4 @@ h6{
         display: flex;
         gap: 2%;
     }
-
 }

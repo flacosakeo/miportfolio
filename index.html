@@ -273,6 +273,7 @@
                                 <option value="0">Elegir</option>
                                 <option value="1">Barras</option>
                                 <option value="2">Circulos</option>
+                                <option value="3">Torta</option>
                             </select>                            
                         
                             <a href="" onclick="recargar(); return false"><img src="iconos/rotation.png" alt="" id="iconoactualizar" title="Recargar"></a> 
@@ -290,9 +291,14 @@
 
                     <div class="skillscircularcontainer" id="circulos" hidden>
                 
-                    </div>                
+                    </div>
                 </ul>
-            
+                <div id="containertorta" hidden>
+                    <ul >    
+                        <canvas id="canvas"></canvas>
+                        
+                    </ul>
+                </div>
         </div>
 
 
@@ -347,8 +353,11 @@
     
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+
+    
     <script src="app.js"></script>
     <script src="skills.js"></script>
+    <!--<script src="torta.js"></script>-->
 </body>
 </html>
 
