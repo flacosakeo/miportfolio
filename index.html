@@ -210,23 +210,25 @@
         </div>
 
         <!-- Modal con carrusel -->
-        <div id="miModal" class="modal">
-            <div class="modal-contenido">
-            <span class="cerrar">&times;</span>
-            
-            <div class="carrusel">
+        <div id="miModal" class="modal1" aria-hidden="true">
+            <div class="modal-contenido" role="dialog" aria-modal="true">
+              <button class="cerrar" aria-label="Cerrar">&times;</button>
+          
+              <div class="carrusel">
+                <button class="prev" aria-label="Anterior">&#10094;</button>
+          
                 <div class="slides">
-                <img src="imagen/menu.jpg" class="activo">
-                <img src="imagen/pacientes.jpg">
-                <img src="imagen/facturacion.jpg">
-                <img src="imagen/resumen.jpg">
-                <img src="imagen/estadisticas.jpg">
+                  <img src="imagen/menu.jpg" class="activo" >
+                  <img src="imagen/pacientes.jpg" >
+                  <img src="imagen/facturacion.jpg" >
+                  <img src="imagen/resumen.jpg" >
+                  <img src="imagen/estadisticas.jpg" >
                 </div>
-                <button class="prev">&#10094;</button>
-                <button class="next">&#10095;</button>
+          
+                <button class="next" aria-label="Siguiente">&#10095;</button>
+              </div>
             </div>
-            </div>
-        </div>
+          </div>
 
 
 
