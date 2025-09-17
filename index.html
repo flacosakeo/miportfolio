@@ -202,8 +202,34 @@
                     <img src="iconos/accept1.png">
                     <a href="https://flacosakeo.github.io/memotest/" target="_blank"><h5>&nbspJuego de la Memoria</h5></a>
                 </li>
+                <li id="practica">
+                    <img src="iconos/accept1.png">
+                    <a href="#" id="abrirModal"><h5>&nbspFacturación Sanatorial (Excel)</h5></a>
+                </li>
             </ul>
         </div>
+
+        <!-- Modal con carrusel -->
+        <div id="miModal" class="modal">
+            <div class="modal-contenido">
+            <span class="cerrar">&times;</span>
+            
+            <div class="carrusel">
+                <div class="slides">
+                <img src="imagen/menu.jpg" class="activo">
+                <img src="imagen/pacientes.jpg">
+                <img src="imagen/facturacion.jpg">
+                <img src="imagen/resumen.jpg">
+                <img src="imagen/estadisticas.jpg">
+                </div>
+                <button class="prev">&#10094;</button>
+                <button class="next">&#10095;</button>
+            </div>
+            </div>
+        </div>
+
+
+
 
         <div id="conocimientos">
             <div id="tituloconocimiento">
@@ -369,6 +395,7 @@
     
     <script src="app.js"></script>
     <script src="skills.js"></script>
+    <script src="modal.js"></script>
     <!--<script src="torta.js"></script>-->
 </body>
 </html>
