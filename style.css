@@ -478,7 +478,7 @@ h6{
         padding: 20px;
         border-radius: 10px;
         width: 80%;
-        height: 28%;
+        height: 82%;
         position: relative;
     }
     .cerrar {
@@ -489,4 +489,15 @@ h6{
         cursor: pointer;
     }
 
+}
+@media (max-width:500px){
+    .modal-contenido {
+        background: #d4d4d4;
+        margin: 50% auto;
+        padding: 20px;
+        border-radius: 10px;
+        width: 80%;
+        height: 22%;
+        position: relative;
+    }    
 }
