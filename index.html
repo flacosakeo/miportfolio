@@ -58,11 +58,14 @@
     </div>
   </nav>
 
-  <!-- BARRA DE HERRAMIENTAS ADMINISTRADOR -->
+<!-- BARRA DE HERRAMIENTAS ADMINISTRADOR -->
   <aside id="adminPanel" class="hidden bg-gradient-to-r from-sky-600 to-blue-600 text-white py-2 px-4 shadow-md transition-all">
     <div class="max-w-6xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-2">
       <span class="text-xs sm:text-sm font-medium flex items-center gap-2">
-        <i class="bi bi-gear-fill"></i> Modo Administrador activo: Ahora puedes editar datos, foto, enlaces y agregar registros.
+        <i class="bi bi-gear-fill"></i> Modo Administrador activo.
+        <span id="syncStatus" class="hidden text-[11px] px-2 py-0.5 rounded-full bg-white/20">
+          <i class="bi bi-arrow-repeat animate-spin mr-1"></i> Sincronizando...
+        </span>
       </span>
       <button id="btnLogout" class="px-3 py-1 bg-white text-slate-900 text-xs font-semibold rounded-full hover:bg-slate-100 shadow transition-colors">
         Cerrar Sesión

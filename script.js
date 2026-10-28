@@ -1,4 +1,11 @@
 // ==========================================
+// CONFIGURACIÓN DE JSONBIN.IO
+// ==========================================
+const JSONBIN_BIN_ID = "6ae21af9ac6210605a59931b";
+const JSONBIN_API_KEY = "$2a$10$h1ga/gCzgjCsMbB4gsFkruH5UR0wrQ4tXHDXQHC2gr5FTFiy.b/p.";
+const JSONBIN_URL = `https://api.jsonbin.io/v3/b/${JSONBIN_BIN_ID}`;
+
+// ==========================================
 // 1. CONTROL DE MODALES NATIVOS (<dialog>)
 // ==========================================
 function abrirModal(id) {
@@ -51,7 +58,7 @@ function inicializarTema() {
 }
 
 // ==========================================
-// 3. DATOS INICIALES POR DEFECTO
+// 3. DATOS DE RESPALDO (POR DEFECTO)
 // ==========================================
 const datosPredeterminados = {
   perfil: {
@@ -113,7 +120,7 @@ const datosPredeterminados = {
       link: "https://github.com"
     }
   ],
-habilidades: [
+  habilidades: [
     { id: "hab_1", nombre: "HTML5", nivel: 90 },
     { id: "hab_2", nombre: "CSS3 / Tailwind", nivel: 85 },
     { id: "hab_3", nombre: "JavaScript", nivel: 80 },
@@ -124,21 +131,75 @@ habilidades: [
 };
 
 // ==========================================
-// 4. ESTADO & PERSISTENCIA
+// 4. ESTADO & SINCRONIZACIÓN REMOTA (JSONBIN)
 // ==========================================
 let modoAdmin = false;
-let cvData = JSON.parse(localStorage.getItem('cvData')) || datosPredeterminados;
+let cvData = { ...datosPredeterminados };
+let observerHabilidades = null;
 
-if (!cvData.perfil) cvData.perfil = datosPredeterminados.perfil;
-if (!cvData.sobreMi) cvData.sobreMi = datosPredeterminados.sobreMi;
-if (!cvData.redes) cvData.redes = datosPredeterminados.redes;
-if (!cvData.experiencias) cvData.experiencias = datosPredeterminados.experiencias;
-if (!cvData.educacion) cvData.educacion = datosPredeterminados.educacion;
-if (!cvData.proyectos) cvData.proyectos = datosPredeterminados.proyectos;
-if (!cvData.habilidades) cvData.habilidades = datosPredeterminados.habilidades;
+// Cargar datos remotos desde JSONBin
+async function cargarDatosRemotos() {
+  const syncLabel = document.getElementById('syncStatus');
+  if (syncLabel) syncLabel.classList.remove('hidden');
 
-function guardarDatos() {
+  try {
+    const res = await fetch(`${JSONBIN_URL}/latest`, {
+      headers: {
+        'X-Master-Key': JSONBIN_API_KEY
+      }
+    });
+
+    if (res.ok) {
+      const json = await res.json();
+      if (json.record && Object.keys(json.record).length > 2) {
+        cvData = json.record;
+        localStorage.setItem('cvData', JSON.stringify(cvData));
+      }
+    } else {
+      // Respaldo en localStorage si la API falla o no tiene conexión
+      const local = localStorage.getItem('cvData');
+      if (local) cvData = JSON.parse(local);
+    }
+  } catch (err) {
+    console.warn("Sin conexión con JSONBin, usando respaldo local:", err);
+    const local = localStorage.getItem('cvData');
+    if (local) cvData = JSON.parse(local);
+  } finally {
+    if (syncLabel) syncLabel.classList.add('hidden');
+    actualizarInterfaz();
+  }
+}
+
+// Guardar en la nube (JSONBin) y en localStorage
+async function guardarDatos() {
   localStorage.setItem('cvData', JSON.stringify(cvData));
+
+  const syncLabel = document.getElementById('syncStatus');
+  if (syncLabel) {
+    syncLabel.innerHTML = '<i class="bi bi-arrow-repeat animate-spin mr-1"></i> Guardando en la nube...';
+    syncLabel.classList.remove('hidden');
+  }
+
+  try {
+    const res = await fetch(JSONBIN_URL, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-Master-Key': JSONBIN_API_KEY
+      },
+      body: JSON.stringify(cvData)
+    });
+
+    if (res.ok && syncLabel) {
+      syncLabel.innerHTML = '<i class="bi bi-cloud-check mr-1 text-emerald-300"></i> Guardado en vivo';
+      setTimeout(() => syncLabel.classList.add('hidden'), 3000);
+    }
+  } catch (err) {
+    console.error("Error al guardar en JSONBin:", err);
+    if (syncLabel) {
+      syncLabel.innerHTML = '<i class="bi bi-exclamation-triangle mr-1 text-rose-300"></i> Error en nube (guardado local)';
+    }
+  }
 }
 
 // ==========================================
@@ -156,7 +217,7 @@ function actualizarInterfaz() {
 }
 
 function renderPerfil() {
-  const p = cvData.perfil;
+  const p = cvData.perfil || {};
   document.getElementById('profileNombre').innerText = p.nombre || "Tu Nombre";
   document.getElementById('profileTitulo').innerText = p.titulo || "Tu Título";
   document.getElementById('profileImg').src = p.foto || "https://via.placeholder.com/150";
@@ -171,6 +232,8 @@ function renderSobreMi() {
 
 function renderRedes() {
   const contenedor = document.getElementById('listaRedes');
+  if (!contenedor) return;
+
   if (!cvData.redes || cvData.redes.length === 0) {
     contenedor.innerHTML = `<span class="text-xs text-slate-400">Sin redes añadidas</span>`;
     return;
@@ -195,7 +258,9 @@ function renderRedes() {
 
 function renderExperiencia() {
   const contenedor = document.getElementById('listaExperiencias');
-  if (cvData.experiencias.length === 0) {
+  if (!contenedor) return;
+
+  if (!cvData.experiencias || cvData.experiencias.length === 0) {
     contenedor.innerHTML = `<p class="text-xs text-slate-400">No hay experiencias cargadas.</p>`;
     return;
   }
@@ -225,7 +290,9 @@ function renderExperiencia() {
 
 function renderEducacion() {
   const contenedor = document.getElementById('listaEducacion');
-  if (cvData.educacion.length === 0) {
+  if (!contenedor) return;
+
+  if (!cvData.educacion || cvData.educacion.length === 0) {
     contenedor.innerHTML = `<p class="text-xs text-slate-400">No hay registros de educación.</p>`;
     return;
   }
@@ -256,7 +323,9 @@ function renderEducacion() {
 
 function renderProyectos() {
   const contenedor = document.getElementById('listaProyectos');
-  if (cvData.proyectos.length === 0) {
+  if (!contenedor) return;
+
+  if (!cvData.proyectos || cvData.proyectos.length === 0) {
     contenedor.innerHTML = `<p class="text-xs text-slate-400">No hay proyectos cargados.</p>`;
     return;
   }
@@ -315,7 +384,6 @@ function renderHabilidades() {
           <span class="text-xs font-bold text-accent skill-percent-label" data-target="${porcentaje}">0%</span>
         </div>
         
-        <!-- Pista de la barra -->
         <div class="skill-track w-full bg-slate-200 dark:bg-slate-800 rounded-full h-2.5 overflow-hidden">
           <div class="skill-progress-bar h-2.5 rounded-full" 
                data-target="${porcentaje}" 
@@ -329,7 +397,78 @@ function renderHabilidades() {
 }
 
 // ==========================================
-// 6. INGRESO Y SESIÓN ADMIN
+// 6. ANIMACIÓN AL HACER SCROLL (INTERSECTIONOBSERVER)
+// ==========================================
+function iniciarObserverHabilidades() {
+  const seccion = document.getElementById('habilidades');
+  if (!seccion) return;
+
+  const animarBarras = () => {
+    const barras = seccion.querySelectorAll('.skill-progress-bar');
+    const labels = seccion.querySelectorAll('.skill-percent-label');
+
+    barras.forEach(barra => {
+      const valorFinal = barra.getAttribute('data-target') || '50';
+      barra.style.width = valorFinal + '%';
+    });
+
+    labels.forEach(label => {
+      const finalVal = parseInt(label.getAttribute('data-target'), 10) || 50;
+      animarContador(label, finalVal);
+    });
+  };
+
+  const resetearBarras = () => {
+    const barras = seccion.querySelectorAll('.skill-progress-bar');
+    const labels = seccion.querySelectorAll('.skill-percent-label');
+
+    barras.forEach(barra => {
+      barra.style.width = '0%';
+    });
+    labels.forEach(label => {
+      label.innerText = '0%';
+    });
+  };
+
+  if ('IntersectionObserver' in window) {
+    if (observerHabilidades) observerHabilidades.disconnect();
+
+    observerHabilidades = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          animarBarras();
+        } else {
+          resetearBarras();
+        }
+      });
+    }, { threshold: 0.15 });
+
+    observerHabilidades.observe(seccion);
+  } else {
+    animarBarras();
+  }
+}
+
+function animarContador(elemento, valorFinal) {
+  let actual = 0;
+  const duracion = 800;
+  const pasos = 25;
+  const incremento = valorFinal / pasos;
+  const tiempoPaso = duracion / pasos;
+
+  const timer = setInterval(() => {
+    actual += incremento;
+    if (actual >= valorFinal) {
+      elemento.innerText = valorFinal + '%';
+      clearInterval(timer);
+    } else {
+      elemento.innerText = Math.round(actual) + '%';
+    }
+  }, tiempoPaso);
+}
+
+// ==========================================
+// 7. INGRESO Y SESIÓN ADMIN
 // ==========================================
 const ADMIN_USER = "admin";
 const ADMIN_PASS = "30726244";
@@ -382,10 +521,10 @@ function controlarBotonesAdmin() {
 }
 
 // ==========================================
-// 7. EDICIÓN DE PERFIL & SOBRE MÍ
+// 8. EDICIÓN DE PERFIL & SOBRE MÍ
 // ==========================================
 function abrirModalPerfil() {
-  const p = cvData.perfil;
+  const p = cvData.perfil || {};
   document.getElementById('editNombre').value = p.nombre || '';
   document.getElementById('editTitulo').value = p.titulo || '';
   document.getElementById('editFotoUrl').value = p.foto || '';
@@ -396,50 +535,56 @@ function abrirModalPerfil() {
   abrirModal('modalPerfil');
 }
 
-document.getElementById('formPerfil').addEventListener('submit', function(e) {
-  e.preventDefault();
-  const fileInput = document.getElementById('editFotoFile');
-  const file = fileInput.files[0];
+const formPerfil = document.getElementById('formPerfil');
+if (formPerfil) {
+  formPerfil.addEventListener('submit', function(e) {
+    e.preventDefault();
+    const fileInput = document.getElementById('editFotoFile');
+    const file = fileInput.files[0];
 
-  const guardar = (fotoUrl) => {
-    cvData.perfil = {
-      nombre: document.getElementById('editNombre').value.trim(),
-      titulo: document.getElementById('editTitulo').value.trim(),
-      foto: fotoUrl,
-      email: document.getElementById('editEmail').value.trim(),
-      telefono: document.getElementById('editTelefono').value.trim(),
-      ubicacion: document.getElementById('editUbicacion').value.trim()
+    const guardar = (fotoUrl) => {
+      cvData.perfil = {
+        nombre: document.getElementById('editNombre').value.trim(),
+        titulo: document.getElementById('editTitulo').value.trim(),
+        foto: fotoUrl,
+        email: document.getElementById('editEmail').value.trim(),
+        telefono: document.getElementById('editTelefono').value.trim(),
+        ubicacion: document.getElementById('editUbicacion').value.trim()
+      };
+      guardarDatos();
+      actualizarInterfaz();
+      cerrarModal('modalPerfil');
     };
-    guardarDatos();
-    actualizarInterfaz();
-    cerrarModal('modalPerfil');
-  };
 
-  if (file) {
-    const reader = new FileReader();
-    reader.onload = (ev) => guardar(ev.target.result);
-    reader.readAsDataURL(file);
-  } else {
-    const url = document.getElementById('editFotoUrl').value.trim() || cvData.perfil.foto;
-    guardar(url);
-  }
-});
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = (ev) => guardar(ev.target.result);
+      reader.readAsDataURL(file);
+    } else {
+      const url = document.getElementById('editFotoUrl').value.trim() || cvData.perfil.foto;
+      guardar(url);
+    }
+  });
+}
 
 function abrirModalSobreMi() {
   document.getElementById('editSobreMiTexto').value = cvData.sobreMi || '';
   abrirModal('modalSobreMi');
 }
 
-document.getElementById('formSobreMi').addEventListener('submit', function(e) {
-  e.preventDefault();
-  cvData.sobreMi = document.getElementById('editSobreMiTexto').value.trim();
-  guardarDatos();
-  actualizarInterfaz();
-  cerrarModal('modalSobreMi');
-});
+const formSobreMi = document.getElementById('formSobreMi');
+if (formSobreMi) {
+  formSobreMi.addEventListener('submit', function(e) {
+    e.preventDefault();
+    cvData.sobreMi = document.getElementById('editSobreMiTexto').value.trim();
+    guardarDatos();
+    actualizarInterfaz();
+    cerrarModal('modalSobreMi');
+  });
+}
 
 // ==========================================
-// 8. REDES SOCIALES (AGREGAR & EDITAR)
+// 9. REDES SOCIALES
 // ==========================================
 function abrirModalRedSocial() {
   const idInput = document.getElementById('redId');
@@ -505,7 +650,7 @@ function eliminarRed(id) {
 }
 
 // ==========================================
-// 9. AGREGAR Y EDITAR (EXPERIENCIA/ESTUDIOS/PROYECTOS)
+// 10. EXPERIENCIA / EDUCACIÓN / PROYECTOS
 // ==========================================
 function abrirModalItem(tipo) {
   document.getElementById('itemTipo').value = tipo;
@@ -557,9 +702,7 @@ if (formItem) {
 
     if (idExistente) {
       const index = cvData[tipo].findIndex(it => it.id === idExistente);
-      if (index !== -1) {
-        cvData[tipo][index] = itemModificado;
-      }
+      if (index !== -1) cvData[tipo][index] = itemModificado;
     } else {
       cvData[tipo].unshift(itemModificado);
     }
@@ -579,13 +722,8 @@ function eliminarElemento(categoria, id) {
 }
 
 // ==========================================
-// 10. GESTIÓN DE HABILIDADES CON BARRA DE PROGRESO ANIMADA
+// 11. HABILIDADES CON BARRA DE PROGRESO
 // ==========================================
-
-// Variable global para el observador de scroll
-let observerHabilidades = null;
-
-// Sincronizar el slider con el input numérico en el modal
 function sincronizarPorcentaje(valor) {
   let num = parseInt(valor, 10);
   if (isNaN(num)) num = 1;
@@ -595,126 +733,6 @@ function sincronizarPorcentaje(valor) {
   document.getElementById('habilidadRango').value = num;
   document.getElementById('habilidadNivel').value = num;
   document.getElementById('valorPorcentajeVista').innerText = num + '%';
-}
-
-function renderHabilidades() {
-  const contenedor = document.getElementById('listaHabilidades');
-  if (!contenedor) return;
-
-  if (!cvData.habilidades || cvData.habilidades.length === 0) {
-    contenedor.innerHTML = `<span class="text-xs text-slate-400">Sin habilidades registradas</span>`;
-    return;
-  }
-
-  // Renderizamos las barras con data-nivel y ancho inicial en 0%
-  contenedor.innerHTML = cvData.habilidades.map(hab => {
-    const porcentaje = Math.min(100, Math.max(1, parseInt(hab.nivel, 10) || 50));
-    return `
-      <div class="p-3.5 rounded-xl border border-slate-200 dark:border-slate-800/70 bg-slate-50 dark:bg-slate-950/40 space-y-2">
-        <div class="flex justify-between items-center">
-          <div class="flex items-center gap-2">
-            <span class="text-xs font-semibold text-slate-800 dark:text-slate-200">${hab.nombre}</span>
-            ${modoAdmin ? `
-              <div class="flex items-center gap-1">
-                <button onclick="editarHabilidad('${hab.id}')" class="text-sky-500 hover:text-sky-600 p-0.5 text-xs" title="Editar">
-                  <i class="bi bi-pencil"></i>
-                </button>
-                <button onclick="eliminarHabilidad('${hab.id}')" class="text-rose-500 hover:text-rose-600 p-0.5 text-xs" title="Eliminar">
-                  <i class="bi bi-trash"></i>
-                </button>
-              </div>
-            ` : ''}
-          </div>
-          <!-- Texto del porcentaje que también se anima -->
-          <span class="text-xs font-bold text-accent skill-percent-label" data-target="${porcentaje}">0%</span>
-        </div>
-        
-        <!-- Contenedor y barra con ancho inicial 0% -->
-        <div class="w-full bg-slate-200 dark:bg-slate-800 rounded-full h-2.5 overflow-hidden">
-          <div class="skill-progress-bar bg-gradient-to-r from-sky-500 to-accent h-2.5 rounded-full" 
-               data-target="${porcentaje}" 
-               style="width: 0%;"></div>
-        </div>
-      </div>
-    `;
-  }).join('');
-
-  // Re-vincular o inicializar el observador para las nuevas barras creadas
-  iniciarObserverHabilidades();
-}
-
-// Observador que detecta cuándo la sección entra o sale de la pantalla
-function iniciarObserverHabilidades() {
-  const seccion = document.getElementById('habilidades');
-  if (!seccion) return;
-
-  const animarBarras = () => {
-    const barras = seccion.querySelectorAll('.skill-progress-bar');
-    const labels = seccion.querySelectorAll('.skill-percent-label');
-
-    barras.forEach(barra => {
-      const valorFinal = barra.getAttribute('data-target') || '50';
-      barra.style.width = valorFinal + '%';
-    });
-
-    labels.forEach(label => {
-      const finalVal = parseInt(label.getAttribute('data-target'), 10) || 50;
-      animarContador(label, finalVal);
-    });
-  };
-
-  const resetearBarras = () => {
-    const barras = seccion.querySelectorAll('.skill-progress-bar');
-    const labels = seccion.querySelectorAll('.skill-percent-label');
-
-    barras.forEach(barra => {
-      barra.style.width = '0%';
-    });
-    labels.forEach(label => {
-      label.innerText = '0%';
-    });
-  };
-
-  // Si la API IntersectionObserver está disponible
-  if ('IntersectionObserver' in window) {
-    if (observerHabilidades) observerHabilidades.disconnect();
-
-    observerHabilidades = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          animarBarras();
-        } else {
-          resetearBarras();
-        }
-      });
-    }, {
-      threshold: 0.15
-    });
-
-    observerHabilidades.observe(seccion);
-  } else {
-    // Fallback directo si no hay IntersectionObserver
-    animarBarras();
-  }
-}
-
-// Función auxiliar para que el número también cuente de 0 hasta el valor
-function animarContador(elemento, valorFinal) {
-  let actual = 0;
-  const duracion = 900; // milisegundos
-  const pasos = 30;
-  const incremento = valorFinal / pasos;
-  const tiempoPaso = duracion / pasos;
-
-  const timer = setInterval(() => {
-    actual += incremento;
-    if (actual >= valorFinal) {
-      elemento.innerText = valorFinal + '%';
-      clearInterval(timer);
-    } else {
-      elemento.innerText = Math.round(actual) + '%';
-    }
-  }, tiempoPaso);
 }
 
 function abrirModalHabilidad() {
@@ -776,15 +794,11 @@ function eliminarHabilidad(id) {
 }
 
 // ==========================================
-// 11. EXPORTAR A PDF (FIJANDO ANCHOS ANTES DE IMPRIMIR)
+// 12. EXPORTAR A PDF LIMPIO
 // ==========================================
 function descargarCvPdf() {
-  // 1. Desconectar temporalmente el observador para que no resetee las barras
-  if (observerHabilidades) {
-    observerHabilidades.disconnect();
-  }
+  if (observerHabilidades) observerHabilidades.disconnect();
 
-  // 2. Aplicar el ancho exacto y texto de porcentaje de forma forzada e inmediata
   const barras = document.querySelectorAll('.skill-progress-bar');
   const labels = document.querySelectorAll('.skill-percent-label');
 
@@ -799,11 +813,8 @@ function descargarCvPdf() {
     label.innerText = valor + '%';
   });
 
-  // 3. Dar un pequeño respiro (150ms) para que el navegador pinte el DOM antes de imprimir
   setTimeout(() => {
     window.print();
-
-    // 4. Al cerrar la ventana de impresión, restablecer el observador normal de la web
     setTimeout(() => {
       iniciarObserverHabilidades();
     }, 500);
@@ -811,10 +822,10 @@ function descargarCvPdf() {
 }
 
 // ==========================================
-// 12. INICIALIZACIÓN
+// 13. INICIALIZACIÓN
 // ==========================================
 document.addEventListener('DOMContentLoaded', () => {
   inicializarTema();
   inicializarLoginAdmin();
-  actualizarInterfaz();
+  cargarDatosRemotos(); // Carga en vivo desde JSONBin
 });
