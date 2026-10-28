@@ -6,8 +6,8 @@ const JSONBIN_API_KEY = "$2a$10$h1ga/gCzgjCsMbB4gsFkruH5UR0wrQ4tXHDXQHC2gr5FTFiy
 const JSONBIN_URL = `https://api.jsonbin.io/v3/b/${JSONBIN_BIN_ID}`;
 
 // Datos de Cloudinary
-const CLOUDINARY_CLOUD_NAME = "uxnunjxj";
-const CLOUDINARY_UPLOAD_PRESET = "ml_default";
+const CLOUDINARY_CLOUD_NAME = uxnunjxj;
+const CLOUDINARY_UPLOAD_PRESET = ml_default;
 
 // ==========================================
 // 1. CONTROL DE MODALES NATIVOS (<dialog>)
