@@ -5,6 +5,10 @@ const JSONBIN_BIN_ID = "6ae21af9ac6210605a59931b";
 const JSONBIN_API_KEY = "$2a$10$h1ga/gCzgjCsMbB4gsFkruH5UR0wrQ4tXHDXQHC2gr5FTFiy.b/p.";
 const JSONBIN_URL = `https://api.jsonbin.io/v3/b/${JSONBIN_BIN_ID}`;
 
+// Datos de Cloudinary
+const CLOUDINARY_CLOUD_NAME = "uxnunjxj";
+const CLOUDINARY_UPLOAD_PRESET = "ml_default";
+
 // ==========================================
 // 1. CONTROL DE MODALES NATIVOS (<dialog>)
 // ==========================================
@@ -523,6 +527,9 @@ function controlarBotonesAdmin() {
 // ==========================================
 // 8. EDICIÓN DE PERFIL & SOBRE MÍ
 // ==========================================
+// ==========================================
+// 8. EDICIÓN DE PERFIL CON SUBIDA A CLOUDINARY
+// ==========================================
 function abrirModalPerfil() {
   const p = cvData.perfil || {};
   document.getElementById('editNombre').value = p.nombre || '';
@@ -535,34 +542,65 @@ function abrirModalPerfil() {
   abrirModal('modalPerfil');
 }
 
+// Subir archivo directamente a Cloudinary
+async function subirImagenACloudinary(file) {
+  const url = `https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD_NAME}/image/upload`;
+  const formData = new FormData();
+  formData.append('file', file);
+  formData.append('upload_preset', CLOUDINARY_UPLOAD_PRESET);
+
+  const respuesta = await fetch(url, {
+    method: 'POST',
+    body: formData
+  });
+
+  if (!respuesta.ok) {
+    throw new Error('Error al subir la imagen a Cloudinary');
+  }
+
+  const datos = await respuesta.json();
+  return datos.secure_url; // URL HTTPS pública y optimizada
+}
+
 const formPerfil = document.getElementById('formPerfil');
 if (formPerfil) {
-  formPerfil.addEventListener('submit', function(e) {
+  formPerfil.addEventListener('submit', async function(e) {
     e.preventDefault();
+    
     const fileInput = document.getElementById('editFotoFile');
     const file = fileInput.files[0];
+    const submitBtn = formPerfil.querySelector('button[type="submit"]');
+    const textoOriginal = submitBtn.innerText;
 
-    const guardar = (fotoUrl) => {
+    try {
+      submitBtn.disabled = true;
+      submitBtn.innerText = 'Subiendo foto...';
+
+      let fotoFinalUrl = document.getElementById('editFotoUrl').value.trim() || cvData.perfil.foto;
+
+      // Si seleccionaste un archivo local, se sube primero a Cloudinary
+      if (file) {
+        fotoFinalUrl = await subirImagenACloudinary(file);
+      }
+
+      // Guardar el perfil con la nueva URL en JSONBin
       cvData.perfil = {
         nombre: document.getElementById('editNombre').value.trim(),
         titulo: document.getElementById('editTitulo').value.trim(),
-        foto: fotoUrl,
+        foto: fotoFinalUrl,
         email: document.getElementById('editEmail').value.trim(),
         telefono: document.getElementById('editTelefono').value.trim(),
         ubicacion: document.getElementById('editUbicacion').value.trim()
       };
-      guardarDatos();
+
+      await guardarDatos();
       actualizarInterfaz();
       cerrarModal('modalPerfil');
-    };
-
-    if (file) {
-      const reader = new FileReader();
-      reader.onload = (ev) => guardar(ev.target.result);
-      reader.readAsDataURL(file);
-    } else {
-      const url = document.getElementById('editFotoUrl').value.trim() || cvData.perfil.foto;
-      guardar(url);
+    } catch (error) {
+      alert('Hubo un problema al guardar la foto: ' + error.message);
+    } finally {
+      submitBtn.disabled = false;
+      submitBtn.innerText = textoOriginal;
     }
   });
 }
