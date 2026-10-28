@@ -6,8 +6,8 @@ const JSONBIN_API_KEY = "$2a$10$h1ga/gCzgjCsMbB4gsFkruH5UR0wrQ4tXHDXQHC2gr5FTFiy
 const JSONBIN_URL = `https://api.jsonbin.io/v3/b/${JSONBIN_BIN_ID}`;
 
 // Datos de Cloudinary
-const CLOUDINARY_CLOUD_NAME = uxnunjxj;
-const CLOUDINARY_UPLOAD_PRESET = ml_default;
+const CLOUDINARY_CLOUD_NAME = "uxnunjxj";
+const CLOUDINARY_UPLOAD_PRESET = "ml_default";
 
 // ==========================================
 // 1. CONTROL DE MODALES NATIVOS (<dialog>)
@@ -542,7 +542,7 @@ function abrirModalPerfil() {
   abrirModal('modalPerfil');
 }
 
-// Subir archivo directamente a Cloudinary
+// Subir archivo a Cloudinary con diagnóstico de error en tiempo real
 async function subirImagenACloudinary(file) {
   const url = `https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD_NAME}/image/upload`;
   const formData = new FormData();
@@ -554,14 +554,18 @@ async function subirImagenACloudinary(file) {
     body: formData
   });
 
+  const datos = await respuesta.json();
+
   if (!respuesta.ok) {
-    throw new Error('Error al subir la imagen a Cloudinary');
+    // Extraer el mensaje exacto devuelto por Cloudinary
+    const mensajeDetallado = datos.error ? datos.error.message : 'Error desconocido en Cloudinary';
+    throw new Error(`Cloudinary (${respuesta.status}): ${mensajeDetallado}`);
   }
 
-  const datos = await respuesta.json();
-  return datos.secure_url; // URL HTTPS pública y optimizada
+  return datos.secure_url;
 }
 
+// Formulario de edición con captura y aviso de error
 const formPerfil = document.getElementById('formPerfil');
 if (formPerfil) {
   formPerfil.addEventListener('submit', async function(e) {
@@ -574,16 +578,17 @@ if (formPerfil) {
 
     try {
       submitBtn.disabled = true;
-      submitBtn.innerText = 'Subiendo foto...';
+      submitBtn.innerText = 'Subiendo imagen...';
 
-      let fotoFinalUrl = document.getElementById('editFotoUrl').value.trim() || cvData.perfil.foto;
+      let fotoFinalUrl = document.getElementById('editFotoUrl').value.trim() || (cvData.perfil ? cvData.perfil.foto : '');
 
-      // Si seleccionaste un archivo local, se sube primero a Cloudinary
+      // Si subió un archivo, lo mandamos a Cloudinary
       if (file) {
         fotoFinalUrl = await subirImagenACloudinary(file);
       }
 
-      // Guardar el perfil con la nueva URL en JSONBin
+      submitBtn.innerText = 'Guardando datos...';
+
       cvData.perfil = {
         nombre: document.getElementById('editNombre').value.trim(),
         titulo: document.getElementById('editTitulo').value.trim(),
@@ -597,7 +602,8 @@ if (formPerfil) {
       actualizarInterfaz();
       cerrarModal('modalPerfil');
     } catch (error) {
-      alert('Hubo un problema al guardar la foto: ' + error.message);
+      console.error("Fallo durante el guardado de perfil:", error);
+      alert("⚠️ No se pudo guardar la foto:\n\n" + error.message);
     } finally {
       submitBtn.disabled = false;
       submitBtn.innerText = textoOriginal;
