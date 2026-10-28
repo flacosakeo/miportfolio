@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="es" class="dark scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mi Curriculum Vitae</title>
+
+  <!-- Google Fonts & Tailwind CDN -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <!-- Configuración de Tailwind para Modo Oscuro por Clase -->
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            accent: '#38bdf8',
+            'accent-hover': '#0ea5e9',
+          },
+          fontFamily: {
+            sans: ['Poppins', 'sans-serif'],
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- Iconos de Bootstrap -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="bg-slate-50 dark:bg-slate-950 text-slate-800 dark:text-slate-100 min-h-screen transition-colors duration-300 font-sans">
+
+  <!-- BARRA DE NAVEGACIÓN -->
+  <nav class="sticky top-0 z-40 backdrop-blur-md bg-white/85 dark:bg-slate-950/85 border-b border-slate-200 dark:border-slate-800 transition-colors">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+      <a href="#" class="font-bold text-lg tracking-tight">
+        <span class="text-accent">&lt;CV/&gt;</span> Mi Perfil
+      </a>
+
+      <div class="flex items-center gap-3">
+        <!-- Botón Modo Claro / Oscuro -->
+        <button id="btnThemeToggle" type="button" class="flex items-center gap-2 px-3 py-1.5 text-xs sm:text-sm font-medium rounded-full border border-slate-300 dark:border-slate-700 bg-slate-100 dark:bg-slate-900 hover:border-accent dark:hover:border-accent transition-all">
+          <i id="themeIcon" class="bi bi-sun-fill text-amber-500 dark:text-amber-400"></i>
+          <span id="themeText">Modo Claro</span>
+        </button>
+
+        <!-- Botón Acceso Admin -->
+        <button id="btnOpenLogin" onclick="abrirModal('modalLogin')" class="flex items-center gap-1.5 px-3 py-1.5 text-xs sm:text-sm font-semibold rounded-full border border-accent text-accent hover:bg-accent hover:text-slate-950 transition-all">
+          <i class="bi bi-shield-lock"></i>
+          <span>Admin</span>
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- BARRA DE HERRAMIENTAS ADMINISTRADOR -->
+  <aside id="adminPanel" class="hidden bg-gradient-to-r from-sky-600 to-blue-600 text-white py-2 px-4 shadow-md transition-all">
+    <div class="max-w-6xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-2">
+      <span class="text-xs sm:text-sm font-medium flex items-center gap-2">
+        <i class="bi bi-gear-fill"></i> Modo Administrador activo: Ahora puedes editar datos, foto, enlaces y agregar registros.
+      </span>
+      <button id="btnLogout" class="px-3 py-1 bg-white text-slate-900 text-xs font-semibold rounded-full hover:bg-slate-100 shadow transition-colors">
+        Cerrar Sesión
+      </button>
+    </div>
+  </aside>
+
+  <!-- CONTENEDOR PRINCIPAL -->
+  <main class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+      
+      <!-- COLUMNA LATERAL: Perfil y Datos Personales -->
+      <aside class="lg:col-span-4">
+        <div class="relative bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800/80 rounded-2xl p-6 shadow-sm text-center">
+          
+          <!-- Botón Admin: Editar Perfil -->
+          <button onclick="abrirModalPerfil()" class="btn-admin hidden absolute top-4 right-4 text-xs font-medium px-2.5 py-1 rounded-full border border-sky-500 text-sky-500 hover:bg-sky-500 hover:text-white transition-colors" title="Editar información personal">
+            <i class="bi bi-pencil-square mr-1"></i> Editar
+          </button>
+
+          <!-- Foto de Perfil -->
+          <div class="relative w-32 h-32 mx-auto mb-4">
+            <img id="profileImg" src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=300&auto=format&fit=crop&q=80" alt="Foto de perfil" class="w-full h-full object-cover rounded-full border-4 border-accent shadow-md">
+          </div>
+
+          <h1 id="profileNombre" class="text-xl font-bold tracking-tight text-slate-900 dark:text-white mb-1">Tu Nombre Completo</h1>
+          <p id="profileTitulo" class="text-sm font-medium text-accent mb-4">Desarrollador de Software</p>
+
+          <hr class="border-slate-200 dark:border-slate-800 my-4">
+
+          <!-- Datos de Contacto -->
+          <div class="space-y-2.5 text-left text-xs sm:text-sm text-slate-600 dark:text-slate-400 mb-6">
+            <div class="flex items-center gap-3">
+              <i class="bi bi-envelope text-accent text-base"></i>
+              <span id="profileEmail" class="truncate">correo@ejemplo.com</span>
+            </div>
+            <div class="flex items-center gap-3">
+              <i class="bi bi-geo-alt text-accent text-base"></i>
+              <span id="profileUbicacion" class="truncate">Buenos Aires, Argentina</span>
+            </div>
+            <div class="flex items-center gap-3">
+              <i class="bi bi-telephone text-accent text-base"></i>
+              <span id="profileTelefono" class="truncate">+54 9 11 1234-5678</span>
+            </div>
+          </div>
+
+          <!-- Botón Descargar CV en PDF -->
+          <button id="btnDescargarPdf" onclick="descargarCvPdf()" class="w-full py-2.5 px-4 rounded-xl bg-accent hover:bg-accent-hover text-slate-950 font-semibold text-sm shadow-sm transition-all flex items-center justify-center gap-2 mb-4">
+            <i class="bi bi-file-earmark-pdf"></i>
+            <span>Descargar CV</span>
+          </button>
+
+          <!-- Redes Sociales -->
+          <div class="pt-4 border-t border-slate-200 dark:border-slate-800">
+            <div class="flex items-center justify-between mb-3">
+              <span class="text-xs font-semibold uppercase tracking-wider text-slate-400">Redes Sociales</span>
+              <button onclick="abrirModalRedSocial()" class="btn-admin hidden text-xs px-2 py-0.5 rounded-full border border-emerald-500 text-emerald-500 hover:bg-emerald-500 hover:text-white transition-colors" title="Agregar Red Social">
+                <i class="bi bi-plus-lg"></i> Red
+              </button>
+            </div>
+            <div id="listaRedes" class="flex flex-wrap items-center justify-center gap-2"></div>
+          </div>
+
+        </div>
+      </aside>
+
+      <!-- COLUMNA PRINCIPAL: Contenido Dinámico -->
+      <section class="lg:col-span-8 space-y-6">
+
+        <!-- Sobre Mí -->
+        <article class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800/80 rounded-2xl p-6 shadow-sm">
+          <div class="flex items-center justify-between mb-3">
+            <h2 class="text-base sm:text-lg font-bold flex items-center gap-2 text-slate-900 dark:text-white">
+              <i class="bi bi-person text-accent"></i> Sobre Mí
+            </h2>
+            <button onclick="abrirModalSobreMi()" class="btn-admin hidden text-xs font-medium px-2.5 py-1 rounded-full border border-sky-500 text-sky-500 hover:bg-sky-500 hover:text-white transition-colors">
+              <i class="bi bi-pencil-square mr-1"></i> Editar
+            </button>
+          </div>
+          <p id="sobreMiTexto" class="text-sm leading-relaxed text-slate-600 dark:text-slate-300"></p>
+        </article>
+
+        <!-- Experiencia Laboral -->
+        <article id="experiencia" class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800/80 rounded-2xl p-6 shadow-sm">
+          <div class="flex items-center justify-between mb-4">
+            <h2 class="text-base sm:text-lg font-bold flex items-center gap-2 text-slate-900 dark:text-white">
+              <i class="bi bi-briefcase text-accent"></i> Experiencia Laboral
+            </h2>
+            <button onclick="abrirModalItem('experiencias')" class="btn-admin hidden text-xs font-medium px-2.5 py-1 rounded-full border border-emerald-500 text-emerald-500 hover:bg-emerald-500 hover:text-white transition-colors">
+              <i class="bi bi-plus-lg mr-1"></i> Agregar
+            </button>
+          </div>
+          <div id="listaExperiencias" class="timeline"></div>
+        </article>
+
+        <!-- Educación y Formación -->
+        <article id="educacion" class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800/80 rounded-2xl p-6 shadow-sm">
+          <div class="flex items-center justify-between mb-4">
+            <h2 class="text-base sm:text-lg font-bold flex items-center gap-2 text-slate-900 dark:text-white">
+              <i class="bi bi-mortarboard text-accent"></i> Educación y Certificados
+            </h2>
+            <button onclick="abrirModalItem('educacion')" class="btn-admin hidden text-xs font-medium px-2.5 py-1 rounded-full border border-emerald-500 text-emerald-500 hover:bg-emerald-500 hover:text-white transition-colors">
+              <i class="bi bi-plus-lg mr-1"></i> Agregar
+            </button>
+          </div>
+          <div id="listaEducacion" class="grid grid-cols-1 md:grid-cols-2 gap-4"></div>
+        </article>
+
+        <!-- Proyectos Destacados -->
+        <article id="proyectos" class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800/80 rounded-2xl p-6 shadow-sm">
+          <div class="flex items-center justify-between mb-4">
+            <h2 class="text-base sm:text-lg font-bold flex items-center gap-2 text-slate-900 dark:text-white">
+              <i class="bi bi-code-slash text-accent"></i> Proyectos Destacados
+            </h2>
+            <button onclick="abrirModalItem('proyectos')" class="btn-admin hidden text-xs font-medium px-2.5 py-1 rounded-full border border-emerald-500 text-emerald-500 hover:bg-emerald-500 hover:text-white transition-colors">
+              <i class="bi bi-plus-lg mr-1"></i> Agregar
+            </button>
+          </div>
+          <div id="listaProyectos" class="grid grid-cols-1 md:grid-cols-2 gap-4"></div>
+        </article>
+
+        <!-- Habilidades Técnicas -->
+        <!-- Habilidades Técnicas -->
+        <article id="habilidades" class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800/80 rounded-2xl p-6 shadow-sm">
+          <div class="flex items-center justify-between mb-4">
+            <h2 class="text-base sm:text-lg font-bold flex items-center gap-2 text-slate-900 dark:text-white">
+              <i class="bi bi-tools text-accent"></i> Habilidades &amp; Tecnologías
+            </h2>
+            <button onclick="abrirModalHabilidad()" class="btn-admin hidden text-xs font-medium px-2.5 py-1 rounded-full border border-emerald-500 text-emerald-500 hover:bg-emerald-500 hover:text-white transition-colors" title="Agregar habilidad">
+              <i class="bi bi-plus-lg mr-1"></i> Habilidad
+            </button>
+          </div>
+          <!-- Contenedor en grid para barras de progreso -->
+          <div id="listaHabilidades" class="grid grid-cols-1 md:grid-cols-2 gap-4"></div>
+        </article>
+
+      </section>
+    </div>
+  </main>
+
+<!-- ==================== MODALES NATIVOS AMPLIADOS ==================== -->
+
+  <!-- MODAL: Iniciar Sesión (se mantiene compacto por ser solo usuario y clave) -->
+  <dialog id="modalLogin" class="custom-dialog">
+    <div class="bg-white dark:bg-slate-900 text-slate-900 dark:text-white border border-slate-200 dark:border-slate-800 rounded-2xl p-6 sm:p-8 w-full max-w-md shadow-2xl">
+      <div class="flex justify-between items-center mb-5">
+        <h3 class="font-bold text-lg flex items-center gap-2"><i class="bi bi-shield-lock text-accent"></i> Ingreso Admin</h3>
+        <button type="button" onclick="cerrarModal('modalLogin')" class="text-slate-400 hover:text-slate-600 dark:hover:text-white text-lg"><i class="bi bi-x-lg"></i></button>
+      </div>
+      <form id="formLogin" class="space-y-4">
+        <div>
+          <label class="block text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-1">Usuario</label>
+          <input type="text" id="loginUser" class="w-full px-3.5 py-2.5 text-sm rounded-xl border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 focus:outline-none focus:border-accent" placeholder="usuario" required>
+        </div>
+        <div>
+          <label class="block text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-1">Contraseña</label>
+          <input type="password" id="loginPass" class="w-full px-3.5 py-2.5 text-sm rounded-xl border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 focus:outline-none focus:border-accent" placeholder="contraseña" required>
+        </div>
+        <div id="loginError" class="hidden text-xs text-rose-500 font-medium">Credenciales incorrectas.</div>
+        <button type="submit" class="w-full py-2.5 bg-accent hover:bg-accent-hover text-slate-950 font-semibold text-sm rounded-xl transition-all shadow-sm">Ingresar</button>
+      </form>
+    </div>
+  </dialog>
+
+  <!-- MODAL: Editar Perfil (Ampliado a max-w-2xl con cuadrícula de 2 columnas) -->
+  <dialog id="modalPerfil" class="custom-dialog">
+    <div class="bg-white dark:bg-slate-900 text-slate-900 dark:text-white border border-slate-200 dark:border-slate-800 rounded-2xl p-6 sm:p-8 w-full max-w-2xl shadow-2xl">
+      <div class="flex justify-between items-center mb-5 pb-3 border-b border-slate-200 dark:border-slate-800">
+        <h3 class="font-bold text-lg flex items-center gap-2"><i class="bi bi-person-gear text-accent"></i> Editar Perfil y Contacto</h3>
+        <button type="button" onclick="cerrarModal('modalPerfil')" class="text-slate-400 hover:text-slate-600 dark:hover:text-white text-lg"><i class="bi bi-x-lg"></i></button>
+      </div>
+      <form id="formPerfil" class="space-y-4">
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div>
+            <label class="block text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-1">Nombre Completo</label>
+            <input type="text" id="editNombre" class="w-full px-3.5 py-2 text-sm rounded-xl border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 focus:border-accent outline-none" required>
+          </div>
+          <div>
+            <label class="block text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-1">Título / Especialidad</label>
+            <input type="text" id="editTitulo" class="w-full px-3.5 py-2 text-sm rounded-xl border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 focus:border-accent outline-none" required>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div>
+            <label class="block text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-1">Foto: URL externa</label>
+            <input type="text" id="editFotoUrl" class="w-full px-3.5 py-2 text-sm rounded-xl border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 focus:border-accent outline-none" placeholder="https://...">
+          </div>
+          <div>
+            <label class="block text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-1">O subir archivo local</label>
+            <input type="file" id="editFotoFile" accept="image/*" class="w-full text-xs text-slate-500 file:mr-3 file:py-1.5 file:px-3 file:rounded-full file:border-0 file:text-xs file:font-semibold file:bg-accent file:text-slate-950">
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+          <div>
+            <label class="block text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-1">Email</label>
+            <input type="email" id="editEmail" class="w-full px-3.5 py-2 text-sm rounded-xl border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 focus:border-accent outline-none" required>
+          </div>
+          <div>
+            <label class="block text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-1">Teléfono</label>
+            <input type="text" id="editTelefono" class="w-full px-3.5 py-2 text-sm rounded-xl border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 focus:border-accent outline-none">
+          </div>
+          <div>
+            <label class="block text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-1">Ubicación</label>
+            <input type="text" id="editUbicacion" class="w-full px-3.5 py-2 text-sm rounded-xl border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 focus:border-accent outline-none">
+          </div>
+        </div>
+
+        <div class="flex justify-end gap-3 pt-4 border-t border-slate-200 dark:border-slate-800">
+          <button type="button" onclick="cerrarModal('modalPerfil')" class="px-5 py-2 text-xs font-semibold rounded-xl border border-slate-300 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors">Cancelar</button>
+          <button type="submit" class="px-6 py-2 text-xs font-semibold rounded-xl bg-accent hover:bg-accent-hover text-slate-950 transition-colors">Guardar Cambios</button>
+        </div>
+      </form>
+    </div>
+  </dialog>
+
+  <!-- MODAL: Editar Sobre Mí (Ampliado a max-w-2xl) -->
+  <dialog id="modalSobreMi" class="custom-dialog">
+    <div class="bg-white dark:bg-slate-900 text-slate-900 dark:text-white border border-slate-200 dark:border-slate-800 rounded-2xl p-6 sm:p-8 w-full max-w-2xl shadow-2xl">
+      <div class="flex justify-between items-center mb-4">
+        <h3 class="font-bold text-lg flex items-center gap-2"><i class="bi bi-pencil-square text-accent"></i> Editar "Sobre Mí"</h3>
+        <button type="button" onclick="cerrarModal('modalSobreMi')" class="text-slate-400 hover:text-slate-600 dark:hover:text-white text-lg"><i class="bi bi-x-lg"></i></button>
+      </div>
+      <form id="formSobreMi" class="space-y-4">
+        <textarea id="editSobreMiTexto" rows="6" class="w-full px-3.5 py-3 text-sm rounded-xl border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 focus:border-accent outline-none leading-relaxed" required></textarea>
+        <div class="flex justify-end gap-3 pt-2">
+          <button type="button" onclick="cerrarModal('modalSobreMi')" class="px-5 py-2 text-xs font-semibold rounded-xl border border-slate-300 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors">Cancelar</button>
+          <button type="submit" class="px-6 py-2 text-xs font-semibold rounded-xl bg-accent hover:bg-accent-hover text-slate-950 transition-colors">Guardar</button>
+        </div>
+      </form>
+    </div>
+  </dialog>
+
+  <!-- MODAL: Agregar Red Social (Ampliado a max-w-md) -->
+<!-- MODAL: Agregar / Editar Red Social -->
+  <dialog id="modalRedSocial" class="custom-dialog">
+    <div class="bg-white dark:bg-slate-900 text-slate-900 dark:text-white border border-slate-200 dark:border-slate-800 rounded-2xl p-6 sm:p-8 w-full max-w-md shadow-2xl">
+      <div class="flex justify-between items-center mb-4">
+        <h3 id="modalRedSocialTitle" class="font-bold text-lg flex items-center gap-2">
+          <i class="bi bi-share text-accent"></i> Red Social
+        </h3>
+        <button type="button" onclick="cerrarModal('modalRedSocial')" class="text-slate-400 hover:text-slate-600 dark:hover:text-white text-lg"><i class="bi bi-x-lg"></i></button>
+      </div>
+      <form id="formRedSocial" class="space-y-4">
+        <!-- CAMPO OCULTO PARA SABER SI EDITAMOS O CREAMOS -->
+        <input type="hidden" id="redId">
+
+        <div>
+          <label class="block text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-1">Plataforma</label>
+          <select id="redPlataforma" class="w-full px-3.5 py-2.5 text-sm rounded-xl border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 focus:border-accent outline-none" required>
+            <option value="bi-linkedin">LinkedIn</option>
+            <option value="bi-github">GitHub</option>
+            <option value="bi-twitter-x">X / Twitter</option>
+            <option value="bi-instagram">Instagram</option>
+            <option value="bi-facebook">Facebook</option>
+            <option value="bi-youtube">YouTube</option>
+            <option value="bi-globe">Web / Portafolio</option>
+          </select>
+        </div>
+        <div>
+          <label class="block text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-1">URL del Perfil</label>
+          <input type="url" id="redUrl" class="w-full px-3.5 py-2.5 text-sm rounded-xl border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 focus:border-accent outline-none" placeholder="https://..." required>
+        </div>
+        <div class="flex justify-end gap-3 pt-2">
+          <button type="button" onclick="cerrarModal('modalRedSocial')" class="px-5 py-2 text-xs font-semibold rounded-xl border border-slate-300 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors">Cancelar</button>
+          <button type="submit" class="px-6 py-2 text-xs font-semibold rounded-xl bg-accent hover:bg-accent-hover text-slate-950 transition-colors">Guardar</button>
+        </div>
+      </form>
+    </div>
+  </dialog>
+
+  <!-- MODAL: Crear o Editar Registro (Ampliado a max-w-2xl con campos cómodos) -->
+  <dialog id="modalItem" class="custom-dialog">
+    <div class="bg-white dark:bg-slate-900 text-slate-900 dark:text-white border border-slate-200 dark:border-slate-800 rounded-2xl p-6 sm:p-8 w-full max-w-2xl shadow-2xl">
+      <div class="flex justify-between items-center mb-5 pb-3 border-b border-slate-200 dark:border-slate-800">
+        <h3 id="modalItemTitle" class="font-bold text-lg flex items-center gap-2"><i class="bi bi-file-earmark-text text-accent"></i> Registro</h3>
+        <button type="button" onclick="cerrarModal('modalItem')" class="text-slate-400 hover:text-slate-600 dark:hover:text-white text-lg"><i class="bi bi-x-lg"></i></button>
+      </div>
+      <form id="formItem" class="space-y-4">
+        <input type="hidden" id="itemTipo">
+        <input type="hidden" id="itemId">
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div>
+            <label class="block text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-1">Título o Cargo</label>
+            <input type="text" id="itemTitulo" class="w-full px-3.5 py-2 text-sm rounded-xl border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 focus:border-accent outline-none" required>
+          </div>
+          <div>
+            <label class="block text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-1">Institución / Empresa / Periodo</label>
+            <input type="text" id="itemSubtitulo" class="w-full px-3.5 py-2 text-sm rounded-xl border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 focus:border-accent outline-none" placeholder="Ej: Tech Corp | 2022 - Presente" required>
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-1">Descripción o Tareas</label>
+          <textarea id="itemDescripcion" rows="4" class="w-full px-3.5 py-2.5 text-sm rounded-xl border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 focus:border-accent outline-none leading-relaxed" placeholder="Detalla las tecnologías, logros o funciones..."></textarea>
+        </div>
+
+        <div>
+          <label class="block text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-1">Enlace / Demo / Certificado (Opcional)</label>
+          <input type="url" id="itemLink" class="w-full px-3.5 py-2 text-sm rounded-xl border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 focus:border-accent outline-none" placeholder="https://...">
+        </div>
+
+        <div class="flex justify-end gap-3 pt-4 border-t border-slate-200 dark:border-slate-800">
+          <button type="button" onclick="cerrarModal('modalItem')" class="px-5 py-2 text-xs font-semibold rounded-xl border border-slate-300 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors">Cancelar</button>
+          <button type="submit" class="px-6 py-2 text-xs font-semibold rounded-xl bg-accent hover:bg-accent-hover text-slate-950 transition-colors">Guardar</button>
+        </div>
+      </form>
+    </div>
+  </dialog>
+<!-- MODAL: Crear o Editar Habilidad -->
+  <dialog id="modalHabilidad" class="custom-dialog">
+    <div class="bg-white dark:bg-slate-900 text-slate-900 dark:text-white border border-slate-200 dark:border-slate-800 rounded-2xl p-6 sm:p-8 w-full max-w-md shadow-2xl">
+      <div class="flex justify-between items-center mb-4 pb-2 border-b border-slate-200 dark:border-slate-800">
+        <h3 id="modalHabilidadTitle" class="font-bold text-lg flex items-center gap-2">
+          <i class="bi bi-tools text-accent"></i> Habilidad
+        </h3>
+        <button type="button" onclick="cerrarModal('modalHabilidad')" class="text-slate-400 hover:text-slate-600 dark:hover:text-white text-lg">
+          <i class="bi bi-x-lg"></i>
+        </button>
+      </div>
+      <form id="formHabilidad" class="space-y-4">
+        <input type="hidden" id="habilidadId">
+        <div>
+          <label class="block text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-1">Nombre de la Tecnología / Habilidad</label>
+          <input type="text" id="habilidadNombre" class="w-full px-3.5 py-2.5 text-sm rounded-xl border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 focus:border-accent outline-none" placeholder="Ej: JavaScript, HTML5, SQL..." required>
+        </div>
+        
+        <div>
+          <div class="flex justify-between items-center mb-1">
+            <label class="block text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400">Nivel de Dominio (1 - 100%)</label>
+            <span id="valorPorcentajeVista" class="text-xs font-bold text-accent">80%</span>
+          </div>
+          <div class="flex items-center gap-3">
+            <input type="range" id="habilidadRango" min="1" max="100" value="80" class="w-full accent-sky-400 cursor-pointer" oninput="sincronizarPorcentaje(this.value)">
+            <input type="number" id="habilidadNivel" min="1" max="100" value="80" class="w-20 px-2.5 py-1.5 text-sm font-semibold text-center rounded-xl border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 focus:border-accent outline-none" required oninput="sincronizarPorcentaje(this.value)">
+          </div>
+        </div>
+
+        <div class="flex justify-end gap-3 pt-3 border-t border-slate-200 dark:border-slate-800">
+          <button type="button" onclick="cerrarModal('modalHabilidad')" class="px-5 py-2 text-xs font-semibold rounded-xl border border-slate-300 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors">Cancelar</button>
+          <button type="submit" class="px-6 py-2 text-xs font-semibold rounded-xl bg-accent hover:bg-accent-hover text-slate-950 transition-colors">Guardar</button>
+        </div>
+      </form>
+    </div>
+  </dialog>
+  <script src="script.js"></script>
+</body>
+</html>

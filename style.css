@@ -1,0 +1,187 @@
+/* ============================================================
+   ESTILOS PERSONALIZADOS & COMPONENTES NATIVOS
+   ============================================================ */
+
+/* Estilos de los modales nativos (<dialog>) */
+.custom-dialog {
+  background: transparent;
+  border: none;
+  padding: 1rem;
+  max-width: 100vw;
+  max-height: 100vh;
+}
+
+.custom-dialog::backdrop {
+  background: rgba(15, 23, 42, 0.7);
+  backdrop-filter: blur(4px);
+}
+
+/* Timeline Vertical para Experiencia */
+.timeline {
+  position: relative;
+  padding-left: 1.5rem;
+  border-left: 2px solid rgba(56, 189, 248, 0.3);
+}
+
+.timeline-item {
+  position: relative;
+  margin-bottom: 1.5rem;
+}
+
+.timeline-item:last-child {
+  margin-bottom: 0;
+}
+
+.timeline-item::before {
+  content: '';
+  position: absolute;
+  left: calc(-1.5rem - 5px);
+  top: 4px;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: #38bdf8;
+  box-shadow: 0 0 8px #38bdf8;
+}
+
+/* Redes Sociales: Contenedor y Botón Eliminar */
+.social-item {
+  position: relative;
+  display: inline-flex;
+}
+
+.social-edit-btn {
+  position: absolute;
+  bottom: -6px; /* Ubicación en la parte inferior */
+  left: -6px;   /* Alineado a la izquierda */
+  width: 18px;
+  height: 18px;
+  background-color: #0284c7;
+  color: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 9px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+  border: none;
+  cursor: pointer;
+}
+
+.social-delete-btn {
+  position: absolute;
+  top: -6px;
+  right: -6px;
+  width: 18px;
+  height: 18px;
+  background-color: #ef4444;
+  color: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 9px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+  border: none;
+  cursor: pointer;
+}
+/* Animación suave para las barras de progreso de habilidades */
+.skill-progress-bar {
+  display: block !important;
+  height: 100% !important;
+  background: linear-gradient(90deg, #0284c7, #38bdf8) !important;
+  border-radius: 9999px !important;
+  transition: width 1s cubic-bezier(0.4, 0, 0.2, 1);
+  will-change: width;
+  min-width: 0;
+}
+/* ============================================================
+   EXPORTACIÓN DIRECTA A PDF (@media print)
+   ============================================================ */
+@media print {
+  /* Forzar la impresión exacta de fondos y degradados */
+  * {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  /* Ocultar elementos interactivos o de administración */
+  nav,
+  #adminPanel,
+  .btn-admin,
+  .social-delete-btn,
+  .social-edit-btn,
+  #btnDescargarPdf,
+  #btnThemeToggle,
+  dialog {
+    display: none !important;
+  }
+    @page {
+        margin: 0;
+        size: auto;
+    }
+  body {
+    background-color: #ffffff !important;
+    color: #0f172a !important;
+    font-size: 9.5pt;
+  }
+
+  .timeline {
+    border-left-color: #0284c7 !important;
+  }
+
+  .timeline-item::before {
+    background-color: #0284c7 !important;
+    box-shadow: none !important;
+  }
+
+  article, aside > div {
+    border: 1px solid #e2e8f0 !important;
+    background-color: #ffffff !important;
+    box-shadow: none !important;
+    page-break-inside: avoid;
+    break-inside: avoid;
+    padding: 1rem !important;
+  }
+
+  /* ============================================================
+     BARRAS DE PROGRESO SUTILES Y PEQUEÑAS PARA IMPRESIÓN
+     ============================================================ */
+#listaHabilidades {
+    display: grid !important;
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 0.6rem !important;
+  }
+
+  #listaHabilidades > div {
+    padding: 0.4rem 0.6rem !important;
+    border: 1px solid #e2e8f0 !important;
+    background-color: #ffffff !important;
+    border-radius: 0.5rem !important;
+    page-break-inside: avoid;
+  }
+
+  #listaHabilidades span {
+    font-size: 8pt !important;
+  }
+
+  /* Pista gris de fondo */
+  .skill-track {
+    width: 100% !important;
+    height: 5px !important;
+    background-color: #e2e8f0 !important;
+    border-radius: 9999px !important;
+    overflow: hidden !important;
+    margin-top: 0.25rem !important;
+  }
+
+  /* Barra de relleno para PDF: color plano visible y sin transiciones */
+  .skill-progress-bar {
+    height: 5px !important;
+    background-color: #0284c7 !important;
+    background: #0284c7 !important;
+    border-radius: 9999px !important;
+    transition: none !important;
+    display: block !important;
+  }
+}
