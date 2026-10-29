@@ -848,29 +848,15 @@ function eliminarHabilidad(id) {
 // ==========================================
 // 12. EXPORTAR A PDF LIMPIO
 // ==========================================
+// ==========================================
+// 12. EXPORTAR / VER CV EN NUEVA PESTAÑA
+// ==========================================
 function descargarCvPdf() {
-  if (observerHabilidades) observerHabilidades.disconnect();
-
-  const barras = document.querySelectorAll('.skill-progress-bar');
-  const labels = document.querySelectorAll('.skill-percent-label');
-
-  barras.forEach(barra => {
-    const valor = barra.getAttribute('data-target') || '50';
-    barra.style.setProperty('width', valor + '%', 'important');
-    barra.style.setProperty('background-color', '#0284c7', 'important');
-  });
-
-  labels.forEach(label => {
-    const valor = label.getAttribute('data-target') || '50';
-    label.innerText = valor + '%';
-  });
-
-  setTimeout(() => {
-    window.print();
-    setTimeout(() => {
-      iniciarObserverHabilidades();
-    }, 500);
-  }, 150);
+  // Aseguramos que los datos actuales queden guardados antes de abrir
+  localStorage.setItem('cvData', JSON.stringify(cvData));
+  
+  // Abrir la vista dedicada de impresión en una pestaña nueva
+  window.open('print.html', '_blank');
 }
 // Función para extraer el primer año de 4 dígitos encontrado en el subtítulo/período
 // Ej: "2018 - 2021" -> 2018; "Facturación | 2021" -> 2021
