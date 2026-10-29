@@ -269,7 +269,10 @@ function renderExperiencia() {
     return;
   }
 
-  contenedor.innerHTML = cvData.experiencias.map(item => `
+  // Asegurar orden de más antigua a más reciente antes de pintar
+  const experienciasOrdenadas = ordenarExperienciasPorAntiguedad([...cvData.experiencias]).reverse();
+
+  contenedor.innerHTML = experienciasOrdenadas.map(item => `
     <div class="timeline-item">
       <div class="flex justify-between items-start gap-2">
         <div>
@@ -731,7 +734,7 @@ function editarItem(tipo, id) {
 
 const formItem = document.getElementById('formItem');
 if (formItem) {
-  formItem.addEventListener('submit', function(e) {
+  formItem.addEventListener('submit', async function(e) {
     e.preventDefault();
     const tipo = document.getElementById('itemTipo').value;
     const idExistente = document.getElementById('itemId').value;
@@ -748,10 +751,15 @@ if (formItem) {
       const index = cvData[tipo].findIndex(it => it.id === idExistente);
       if (index !== -1) cvData[tipo][index] = itemModificado;
     } else {
-      cvData[tipo].unshift(itemModificado);
+      cvData[tipo].push(itemModificado);
     }
 
-    guardarDatos();
+    // Si es experiencia, ordenar de la más antigua a la más reciente
+    if (tipo === 'experiencias') {
+      cvData.experiencias = ordenarExperienciasPorAntiguedad(cvData.experiencias);
+    }
+
+    await guardarDatos();
     actualizarInterfaz();
     cerrarModal('modalItem');
   });
@@ -864,7 +872,22 @@ function descargarCvPdf() {
     }, 500);
   }, 150);
 }
+// Función para extraer el primer año de 4 dígitos encontrado en el subtítulo/período
+// Ej: "2018 - 2021" -> 2018; "Facturación | 2021" -> 2021
+function extraerAnioInicio(texto) {
+  if (!texto) return 9999;
+  const match = texto.match(/\b(19\d\d|20\d\d)\b/);
+  return match ? parseInt(match[0], 10) : 9999;
+}
 
+// Ordenar experiencias de la más antigua (menor año) a la más reciente (mayor año)
+function ordenarExperienciasPorAntiguedad(lista) {
+  return lista.sort((a, b) => {
+    const anioA = extraerAnioInicio(a.subtitulo);
+    const anioB = extraerAnioInicio(b.subtitulo);
+    return anioA - anioB; // Menor año primero (más antigua a más reciente)
+  });
+}
 // ==========================================
 // 13. INICIALIZACIÓN
 // ==========================================
